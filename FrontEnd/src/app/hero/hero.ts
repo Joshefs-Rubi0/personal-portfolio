@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+import * as AOS from 'aos';
 
 @Component({
   selector: 'app-hero',
@@ -6,6 +7,12 @@ import { Component } from '@angular/core';
   templateUrl: './hero.html',
   styleUrl: './hero.css',
 })
-export class Hero {
-
+export class Hero implements AfterViewInit{
+  ngAfterViewInit() {
+    AOS.init({
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+  }
 }
