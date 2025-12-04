@@ -12,13 +12,14 @@
   <div class="flex gap-4 mb-12 flex-wrap">
     <div
       *ngFor="let c of categories"
-      (mouseenter)="hoverCategory(c)"
-      class="px-5 py-2 rounded-full cursor-pointer transition
-             border border-gray-600 hover:bg-gray-700"
+      (mouseenter)="!isMobile && hoverCategory(c)"
+      (click)="isMobile && hoverCategory(c)"
+      class="px-5 py-2 rounded-full cursor-pointer transition border border-gray-600 hover:bg-gray-700"
       [class.bg-gray-700]="selected === c"
     >
-      {{ c }}
-    </div>
+  {{ c }}
+</div>
+
   </div>
 
   <!-- Lista -->

@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './projects-section.css'
 })
 export class ProjectsSection implements OnInit, AfterViewInit {
+  isMobile = false;
+
   projects: any[] = [
     {
       id: 1,
@@ -55,8 +57,9 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.filtered = this.projects;
-  }
+  this.isMobile = window.innerWidth < 768;
+  this.filtered = this.projects;
+}
 
   ngAfterViewInit() {
     this.updateCardsOnScroll();
