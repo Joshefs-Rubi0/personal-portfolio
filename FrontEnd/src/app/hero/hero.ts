@@ -20,7 +20,7 @@ export class Hero implements AfterViewInit {
     // Animación de palabras
     const words = ["Full Stack", "Front End", "Back End", "Cloud"];
     let currentIndex = 0;
-    const animatedWord = document.getElementById("animated-word") as HTMLElement;
+    const animatedWord = document.querySelector("#animated-word") as HTMLElement;
 
     setInterval(() => {
       currentIndex = (currentIndex + 1) % words.length;
