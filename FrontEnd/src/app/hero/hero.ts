@@ -18,14 +18,18 @@ export class Hero implements AfterViewInit {
     });
 
     // Animación de palabras
-    const words = ["Full Stack", "Front End", "Back End", "Cloud"];
-    let currentIndex = 0;
-    const animatedWord = document.querySelector("#animated-word") as HTMLElement;
+   const words = ["Full Stack", "Front End", "Back End", "Cloud"];
+let currentIndex = 0;
 
-    setInterval(() => {
-      currentIndex = (currentIndex + 1) % words.length;
-      animatedWord.innerText = words[currentIndex];
-    }, 2000);
+const animatedWord = document.querySelector("#animated-word") as HTMLElement;
+
+if (animatedWord) {
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % words.length;
+    animatedWord.innerText = words[currentIndex];
+  }, 2000);
+}
+
 
 
     /* ----------------------------------

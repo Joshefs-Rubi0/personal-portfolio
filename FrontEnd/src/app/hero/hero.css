@@ -7,6 +7,11 @@ html {
   scroll-behavior: auto;
 }
 
+#animated-word {
+  white-space: nowrap;
+  display: inline-block;
+}
+
 /* ====== ANIMACIÓN DE FLECHA ====== */
 @keyframes scroll-arrow {
   0%   { transform: translateY(0); opacity: .5; }
