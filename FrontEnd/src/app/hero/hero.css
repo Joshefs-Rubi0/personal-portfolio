@@ -1,15 +1,29 @@
-/* Animación shimmer en texto amarillo */
+/* ====== ESPACIO PARA NAVBAR ====== */
+html {
+  scroll-padding-top: 90px;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+/* ====== ANIMACIÓN DE FLECHA ====== */
+@keyframes scroll-arrow {
+  0%   { transform: translateY(0); opacity: .5; }
+  50%  { transform: translateY(10px); opacity: 1; }
+  100% { transform: translateY(0); opacity: .5; }
+}
+
+.animate-scroll-arrow {
+  animation: scroll-arrow 1s ease-in-out infinite;
+}
+
+/* ====== SHIMMER TEXTO ====== */
 .shimmer-text {
-  background: linear-gradient(
-    90deg,
-    #facc15,
-    #ffffff,
-    #facc15
-  );
+  background: linear-gradient(90deg, #facc15, #ffffff, #facc15);
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
-  background-clip: text;
   animation: shimmer 3s linear infinite;
 }
 
@@ -18,52 +32,21 @@
   100% { background-position: 200% center; }
 }
 
+/* ====== ICONOS ====== */
 .icon-wrapper {
   position: relative;
-  transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
-}
-
-.icon-wrapper::before {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 9999px;
-  background: radial-gradient(
-    circle,
-    rgba(80, 150, 255, 0.45),   /* azul claro */
-    rgba(20, 50, 120, 0.35),    /* azul medio */
-    rgba(0, 0, 0, 0)            /* desvanecido */
-  );
-  opacity: 0;
-  filter: blur(18px);
-  transition: opacity 0.3s cubic-bezier(.4, 0, .2, 1);
-  z-index: -1;
+  transition: all 0.3s ease;
 }
 
 .icon-wrapper:hover {
   transform: translateY(-6px) scale(1.12);
 }
 
-.icon-wrapper:hover::before {
-  opacity: 1;
+/* ====== SCROLL SUAVE ESTILO WEBFLOW ====== */
+html.is-scrolling {
+  scroll-behavior: smooth;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1);
 }
-
-.icon-wrapper i {
-  position: relative;
-  z-index: 5;
-  transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
+html.is-scrolling:focus-within {
+  scroll-behavior: auto;
 }
-
- @keyframes pulse-slow {
-    0% { transform: scale(1); opacity: .3; }
-    50% { transform: scale(1.15); opacity: .45; }
-    100% { transform: scale(1); opacity: .3; }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-slow 8s ease-in-out infinite;
-  }
-
-  .animation-delay-1000 {
-    animation-delay: 1s;
-  }
