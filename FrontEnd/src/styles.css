@@ -2,27 +2,20 @@
 
 body {
   @apply bg-neutral-900 text-white;
+  margin: 0;
+  padding: 0;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
-* {
-  scrollbar-width: none;
-}
-
-body {
-  -ms-overflow-style: none;
-}
+/* Ocultar scrollbars en todos los navegadores */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; -ms-overflow-style: none; }
 
 html, body {
-  overflow: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  overflow-x: hidden;
+  /* Quitamos el snap nativo para que GSAP maneje la inercia "directa" */
+  scroll-behavior: auto; 
 }
 
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none;
+app-root {
+  display: block;
 }
