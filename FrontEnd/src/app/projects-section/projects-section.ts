@@ -1,137 +1,51 @@
-import { Component, OnInit, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-projects-section',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   templateUrl: './projects-section.html',
-  styleUrl: './projects-section.css'
+  styleUrls: ['./projects-section.css']
 })
-export class ProjectsSection implements OnInit, AfterViewInit {
-  isMobile = false;
+export class ProjectsSection implements OnInit {
+  selectedCategory = 'FullStack';
+  categories = ['FullStack', 'FrontEnd', 'BackEnd'];
+  activeProject: any = null;
 
-  projects: any[] = [
-    {
-      id: 1,
-      title: 'Proyecto de Ejemplo 1',
-      category: 'Full Stack',
-      description: 'Descripción del proyecto de ejemplo',
-      technologies: 'Angular,Node.js,MySQL',
-      github_link: 'https://github.com',
-      demo_link: 'https://demo.com',
-      image: null
-    },
-    {
-      id: 2,
-      title: 'Proyecto de Ejemplo 2',
-      category: 'Frontend',
-      description: 'Otro proyecto de ejemplo',
-      technologies: 'React,TypeScript',
-      github_link: 'https://github.com',
-      demo_link: 'https://demo.com',
-      image: null
-    },
-    {
-      id: 3,
-      title: 'Proyecto de Ejemplo 3',
-      category: 'Backend',
-      description: 'Tercer proyecto de ejemplo',
-      technologies: 'Node.js,Express,MongoDB',
-      github_link: 'https://github.com',
-      demo_link: 'https://demo.com',
-      image: null
-    }
-  ];
-  filtered: any[] = [];
-  selected = 'Todos';
-
-  categories = ['Todos', 'Full Stack', 'Frontend', 'Backend'];
-
-  constructor(
-    private http: HttpClient,
-    private elementRef: ElementRef
-  ) {}
-
-  ngOnInit() {
-  this.isMobile = window.innerWidth < 768;
-  this.filtered = this.projects;
-}
-
-  ngAfterViewInit() {
-    this.updateCardsOnScroll();
-  }
-
-  @HostListener('window:scroll')
-  onScroll() {
-    this.updateCardsOnScroll();
-  }
-
-  updateCardsOnScroll() {
-    const cards = this.elementRef.nativeElement.querySelectorAll('.project-card');
-    const windowHeight = window.innerHeight;
-    const viewportCenter = windowHeight / 2;
-
-    cards.forEach((card: HTMLElement) => {
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.top + rect.height / 2;
-      const distanceFromCenter = cardCenter - viewportCenter;
-      const maxDistance = windowHeight;
-
-      let scale = 1;
-      let rotateX = 0;
-      let opacity = 1;
-
-      if (distanceFromCenter > maxDistance) {
-        // Tarjeta muy abajo - estado inicial
-        scale = 0.75;
-        rotateX = 25;
-        opacity = 0.2;
-      } else if (distanceFromCenter < -maxDistance) {
-        // Tarjeta muy arriba - estado inicial invertido
-        scale = 0.75;
-        rotateX = -25;
-        opacity = 0.2;
-      } else {
-        // La tarjeta está visible - calcular animación
-        const normalizedDistance = distanceFromCenter / maxDistance;
-        
-        scale = 1 - Math.abs(normalizedDistance) * 0.25;
-        rotateX = normalizedDistance * 25;
-        opacity = 1 - Math.abs(normalizedDistance) * 0.8;
-
-        // Limitar valores
-        scale = Math.max(0.75, Math.min(1, scale));
-        opacity = Math.max(0.2, Math.min(1, opacity));
-      }
-
-      // Aplicar transformaciones
-      card.style.transform = `perspective(1200px) scale(${scale}) rotateX(${rotateX}deg)`;
-      card.style.opacity = opacity.toString();
-      
-      // Box shadow cuando está centrada
-      const normalizedDistance = distanceFromCenter / maxDistance;
-      if (Math.abs(normalizedDistance) < 0.2) {
-        card.style.boxShadow = 'rgba(59, 130, 246, 0.3) 0px 20px 60px 0px';
-      } else {
-        card.style.boxShadow = 'rgba(0, 0, 0, 0.3) 0px 10px 30px 0px';
-      }
-    });
-  }
-
-  hoverCategory(cat: string) {
-    this.selected = cat;
-
-    if (cat === 'Todos') {
-      this.filtered = this.projects;
-    } else {
-      this.filtered = this.projects.filter(p => p.category === cat);
-    }
+  projects = [
+    // --- FULLSTACK ---
+    { title: 'Melon Mind', category: 'FullStack', description: 'Generación automática de facturas a partir de tus citas registradas o facturas desde cero.', extra_info: 'Control total de impuestos y salud financiera.', image: 'assets/stepbro_mind.png', demo_link: '#', status: 'live' },
+    { title: 'Beta Pro', category: 'FullStack', description: 'Sistema de analítica avanzada para e-commerce en tiempo real.', extra_info: 'Fase de testeo de rendimiento y carga.', image: 'assets/carded.png', demo_link: '#', status: 'beta' },
+    { title: 'Nexus Dev', category: 'FullStack', description: 'Herramienta de despliegue continuo para arquitecturas cloud.', extra_info: 'Optimización de pipelines automatizados.', image: 'assets/stepbro_mind.png', demo_link: '#', status: 'beta' },
     
-    // Actualizar animaciones después de filtrar
-    setTimeout(() => this.updateCardsOnScroll(), 100);
+    // --- FRONTEND ---
+    { title: 'UI Kit Pro', category: 'FrontEnd', description: 'Librería de componentes altamente personalizables.', extra_info: 'Basado en principios de diseño moderno.', image: 'assets/carded.png', demo_link: '#', status: 'live' },
+    { title: 'Cyber UI', category: 'FrontEnd', description: 'Dashboard experimental con estética Cyberpunk.', extra_info: 'Uso de GSAP y CSS Masks.', image: 'assets/stepbro_mind.png', demo_link: '#', status: 'beta' },
+    { title: 'Neon Web', category: 'FrontEnd', description: 'Landing page optimizada para conversión.', extra_info: 'SEO-ready y Core Web Vitals.', image: 'assets/carded.png', demo_link: '#', status: 'beta' },
+
+    // --- BACKEND ---
+    { title: 'Auth Master', category: 'BackEnd', description: 'Servicio centralizado de autenticación biométrica.', extra_info: 'Seguridad de grado bancario.', image: 'assets/stepbro_mind.png', demo_link: '#', status: 'live' },
+    { title: 'Data Engine', category: 'BackEnd', description: 'Procesador de datos a gran escala.', extra_info: 'Implementación con Go y Redis.', image: 'assets/carded.png', demo_link: '#', status: 'beta' },
+    { title: 'Neural API', category: 'BackEnd', description: 'API de procesamiento de lenguaje natural.', extra_info: 'Modelos de IA integrados.', image: 'assets/stepbro_mind.png', demo_link: '#', status: 'beta' }
+  ];
+
+  filteredProjects: any[] = [];
+
+  ngOnInit() { this.filter(); }
+
+  selectCategory(cat: string) {
+    this.selectedCategory = cat;
+    this.filter();
+  }
+
+  filter() {
+    this.filteredProjects = this.projects.filter(p => p.category === this.selectedCategory);
+  }
+
+  toggleExpand(project: any) {
+    this.activeProject = this.activeProject === project ? null : project;
+    document.body.style.overflow = this.activeProject ? 'hidden' : 'auto';
   }
 }
