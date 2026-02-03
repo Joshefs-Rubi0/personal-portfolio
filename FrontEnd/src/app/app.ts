@@ -1,40 +1,43 @@
-import { Component, signal, HostListener } from '@angular/core';
+import { Component, signal, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Hero } from './hero/hero';
 import { ProjectsSection } from './projects-section/projects-section';
 import { ContactFooter } from './contact-footer/contact-footer';
 import { AboutMe } from './about-me/about-me';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    Hero,
-    ProjectsSection,
-    ContactFooter,
-    AboutMe
-  ],
+  imports: [CommonModule, Hero, ProjectsSection, ContactFooter, AboutMe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App implements AfterViewInit {
+  isCompacted = signal(false);
+  mobileMenuOpen = signal(false);
 
-  protected readonly title = signal('FrontEnd');
-
-  mobileMenuOpen = signal<boolean>(false);
-
-  //Alterna el menú
-  toggleMobileMenu() {
-    this.mobileMenuOpen.update(v => !v);
+  ngAfterViewInit() {
+    const activeSection = document.querySelector("#section-index");
+    if (activeSection) {
+      activeSection.addEventListener('scroll', () => {
+        const scrollValue = activeSection.scrollTop;
+        this.isCompacted.set(scrollValue > 50); // Activamos la compactación a los 50px
+      });
+    }
   }
 
-  //Cierra menú al clicar fuera del header
-  @HostListener('window:click', ['$event'])
-  @HostListener('window:touchstart', ['$event'])
-  closeMenuOnClickOutside(event: Event) {
-    const target = event.target as HTMLElement;
-
-    if (target.closest('header')) return;
-
-    this.mobileMenuOpen.set(false);
+  toggleMenu() {
+    this.mobileMenuOpen.update(val => !val);
   }
 
+  scrollTo(position: number) {
+    const container = document.querySelector('#section-index');
+    if (container) {
+      container.scrollTo({ top: position, behavior: 'smooth' });
+    }
+  }
+
+  openDemo() {
+    window.location.href = 'https://calendar.notion.so/meet/santiagomasetlarraz/melon-mind';
+  }
 }
