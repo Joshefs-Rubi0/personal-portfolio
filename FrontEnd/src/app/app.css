@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
-/* --- CONFIGURACIÓN DE SCROLL --- */
 #section-index {
   scroll-behavior: smooth;
   scrollbar-width: none;
@@ -9,7 +8,7 @@
   display: none;
 }
 
-/* --- ESTILOS DE PC (NO TOCADOS, SOLO MÁS GLASS) --- */
+/* --- ESTILOS DE PC --- */
 @media only screen and (min-width: 680px) {
   nav.nav-style-5 {
     margin: 0 !important;
@@ -25,7 +24,6 @@
                 transform 0.3s cubic-bezier(0,0,0.5,1), 
                 box-shadow 0.3s cubic-bezier(0,0,0.5,1);
     
-    /* GLASS POTENCIADO EN PC */
     backdrop-filter: blur(30px) saturate(150%);
     background: rgba(15, 15, 15, 0.4); 
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -42,16 +40,12 @@
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 0 24px 0 rgba(0,0,0,0.4);
   }
 
-  .only-on-mobile {
-    display: none !important;
-  }
+  .only-on-mobile { display: none !important; }
 }
 
-/* --- ESTILOS DE MÓVIL (LIMPIEZA Y NOMBRE VISIBLE) --- */
+/* --- ESTILOS DE MÓVIL --- */
 @media only screen and (max-width: 679px) {
-  .hide-on-mobile {
-    display: none !important;
-  }
+  .hide-on-mobile { display: none !important; }
 
   nav.nav-style-5 {
     height: 60px !important;
@@ -80,7 +74,6 @@
     top: 65px;
     left: 0;
     width: 100%;
-    /* GLASS EN DRAWER MÓVIL */
     background: rgba(15, 15, 15, 0.75) !important;
     backdrop-filter: blur(35px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -120,7 +113,7 @@
   }
 }
 
-/* --- CLASES DE UTILIDAD GENERALES --- */
+/* --- UTILIDADES --- */
 .simple-container { display: flex; align-items: center; }
 .justify-between-wide-screen { justify-content: space-between; }
 .grow-1 { flex-grow: 1; }
@@ -141,9 +134,7 @@
   font-weight: 500;
 }
 
-.nav-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+.nav-button:hover { background: rgba(255, 255, 255, 0.1); }
 
 #solicitar-demo[directActionOn] {
   background: #fff;
