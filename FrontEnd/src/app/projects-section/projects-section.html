@@ -1,71 +1,70 @@
-<transparent [class.active]="activeProject !== null" (click)="activeProject = null"></transparent>
+<div class="overlay-blur fixed inset-0 z-[999998] bg-black/95 backdrop-blur-3xl" 
+     (click)="toggleExpand(null)" style="display: none; opacity: 0;">
+</div>
 
-<div class="w-full text-white py-20 bg-[#0a0a0a] component-base">
+<div class="window-modern" [class.show-flex]="activeProject !== null">
+  <div class="p-4 md:p-8 flex justify-end sticky top-0 z-[10001]">
+    <button (click)="toggleExpand(null)" class="btn-close-modern">
+      <div class="btn-circle-bg"></div>
+      <svg class="relative z-10" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
   
-  <div class="text-center mb-10 px-6">
-    <h2 class="section-title text-5xl md:text-7xl mb-6 leading-tight">
-      Mis proyectos<span class="block md:inline"><br class="md:hidden"> destacados</span>
+  <div class="content-holder overflow-y-auto flex-1 px-6 pb-20 md:px-32 custom-scrollbar">
+     <div class="max-w-6xl mx-auto flex flex-col gap-10 mt-4" *ngIf="activeProject">
+        <img [src]="activeProject.image" class="w-full h-[40vh] md:h-[65vh] object-cover rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl">
+        <div class="space-y-8 md:space-y-12 pb-20">
+            <h1 class="text-4xl md:text-8xl font-bold tracking-tighter text-white">{{ activeProject.title }}</h1>
+            <p class="text-xl md:text-3xl text-gray-300 font-light leading-snug">{{ activeProject.description }}</p>
+            <a [href]="activeProject.demo_link" target="_blank" class="inline-block bg-white text-black px-10 md:px-14 py-4 md:py-6 rounded-full font-bold text-lg md:text-2xl transition-all hover:scale-105 shadow-xl">Ver Proyecto Live</a>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="w-full text-white py-24 md:py-32 bg-[#0a0a0a] component-base min-h-screen">
+  <div class="text-center mb-12 md:mb-20 px-6 mt-16">
+    <h2 class="section-title text-4xl md:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+      Mis proyectos <br> destacados
     </h2>
   </div>
 
-  <div class="flex justify-center mb-16 px-4">
-    <div class="inline-flex p-2 bg-white/5 rounded-full border border-white/10 gap-2 overflow-x-auto no-scrollbar">
+  <div class="flex justify-center mb-24 px-4">
+    <div class="inline-flex p-2 bg-white/5 rounded-full border border-white/10 gap-2">
       @for (cat of categories; track cat) {
         <button (click)="selectCategory(cat)" 
                 [class.active-pill]="selectedCategory === cat" 
-                class="pill-item px-8 md:px-10 py-3 rounded-full text-sm md:text-base font-medium transition-all duration-300 whitespace-nowrap">
+                class="pill-item px-8 py-3 rounded-full text-sm font-medium">
           {{ cat }}
         </button>
       }
     </div>
   </div>
 
-  <div class="max-w-[85rem] mx-auto px-4 md:px-8 pb-32">
+  <div class="max-w-[85rem] mx-auto px-4 md:px-8 pb-32 relative">
     @for (p of filteredProjects; track p.title; let i = $index) {
-      
-      <div class="group card-main bg-[#141416] rounded-[32px] p-6 md:p-14 flex flex-col lg:flex-row items-center gap-8 md:gap-14 border border-white/5 cursor-pointer relative transition-all duration-500" 
-           (click)="toggleExpand(p)"
-           [style.top.px]="80 + (i * 20)" 
-           [style.z-index]="i + 1">
+      <div class="card-main group relative" (click)="toggleExpand(p)" style="top: 110px;" [style.z-index]="i + 1">
         
-        <div class="btn-icon-logic absolute top-6 right-6 md:top-10 md:right-10 z-10 p-3 md:p-4 rounded-full text-white/40">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        <div class="btn-expand-wrapper absolute top-6 right-6 md:top-10 md:right-10 z-20">
+           <div class="icon-circle-bg"></div>
+           <svg class="relative z-10 text-white/30 transition-colors" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
         </div>
 
-        <div class="lg:w-[55%] w-full relative h-64 md:h-[450px]">
-          @if (p.status === 'beta') {
-            <span class="absolute top-4 left-4 z-10 bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-widest backdrop-blur-md">Beta</span>
-          }
-          <img [src]="p.image" class="w-full h-full object-cover rounded-2xl md:rounded-3xl shadow-2xl border border-white/5">
-        </div>
+        <div class="flex flex-col lg:flex-row items-center gap-6 md:gap-14 p-6 md:p-14 w-full h-full">
+            <div class="lg:w-[55%] w-full h-56 md:h-[450px] relative overflow-hidden rounded-2xl md:rounded-3xl">
+              <img [src]="p.image" class="w-full h-full object-cover project-img-zoom">
+            </div>
 
-        <div class="lg:w-[45%] w-full space-y-4 md:space-y-8">
-          <h3 class="text-3xl md:text-6xl font-bold tracking-tight leading-none">{{ p.title }}</h3>
-          <p class="text-gray-400 text-base md:text-xl font-light">{{ p.description }}</p>
-          <div class="pt-2 flex items-center gap-3 text-blue-400 font-medium text-base md:text-lg">
-             <span>Explorar caso</span>
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-          </div>
+            <div class="lg:w-[45%] w-full space-y-4 md:space-y-6">
+              <h3 class="text-3xl md:text-6xl font-bold tracking-tight text-white">{{ p.title }}</h3>
+              <p class="text-gray-400 text-base md:text-xl font-light">{{ p.description }}</p>
+              <div class="pt-2 flex items-center gap-3 text-blue-400 font-medium group-hover:translate-x-2 transition-all">
+                <span>Explorar caso</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+            </div>
         </div>
       </div>
-
-      <window [class.active]="activeProject === p" class="window-modern">
-        <div class="p-6 flex justify-end sticky top-0 z-[10000]">
-          <button (click)="toggleExpand(p); $event.stopPropagation()" class="btn-icon-logic p-4 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/10">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-        </div>
-        <holder class="overflow-y-auto flex-1 px-6 pb-20 md:px-32 custom-scrollbar">
-           <div class="max-w-6xl mx-auto flex flex-col gap-10 mt-4">
-              <img [src]="p.image" class="w-full h-[40vh] md:h-[60vh] object-cover rounded-[2rem] border border-white/10">
-              <div class="space-y-8 pb-16">
-                  <h1 class="text-4xl md:text-8xl font-bold tracking-tighter">{{ p.title }}</h1>
-                  <p class="text-xl md:text-3xl text-gray-300 font-light">{{ p.description }}</p>
-                  <a [href]="p.demo_link" target="_blank" class="inline-block bg-white text-black px-10 py-4 rounded-full font-bold text-lg md:text-2xl transition-transform active:scale-95">Ver Proyecto Live</a>
-              </div>
-           </div>
-        </holder>
-      </window>
     }
   </div>
 </div>
