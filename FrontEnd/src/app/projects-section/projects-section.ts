@@ -61,7 +61,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
           this.handleScrollWithCooldown(-1);
         }
       },
-      tolerance: 50, // Aumentado para ser más restrictivo
+      tolerance: 50,
       preventDefault: false
     });
   }
@@ -69,20 +69,26 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   private handleScrollWithCooldown(direction: number) {
     const now = Date.now();
     
-    // Verificar si ha pasado suficiente tiempo desde el último scroll
     if (now - this.lastScrollTime < this.scrollCooldown) {
-      return; // Ignorar el scroll si está en cooldown
+      return;
     }
     
     this.lastScrollTime = now;
     this.navigateCards(direction);
   }
 
+  private getResponsiveThreshold(): number {
+    const isMobile = window.innerWidth < 768;
+    // En móvil: 120px (coincide con top: 120px del CSS)
+    // En desktop: 110px (valor original)
+    return isMobile ? 120 : 110;
+  }
+
   private navigateCards(direction: number) {
     const cards = document.querySelectorAll('.card-main');
     const currentScroll = window.scrollY;
     let targetCard: HTMLElement | null = null;
-    const threshold = 110; 
+    const threshold = this.getResponsiveThreshold();
 
     if (direction === 1) {
       for (let i = 0; i < cards.length; i++) {
@@ -120,35 +126,27 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   toggleExpand(project: any) {
     const tl = gsap.timeline();
 
-    // Si ya hay un proyecto activo O si project es null, cerramos
     if (this.activeProject || project === null) {
       tl.to('.window-modern', { scale: 0.95, opacity: 0, y: 30, duration: 0.4, ease: "power2.inOut" })
       .to('.overlay-blur', { opacity: 0, duration: 0.3 }, "-=0.2")
       .add(() => {
-        // Primero ocultamos los elementos
         gsap.set('.overlay-blur', { display: 'none' });
         gsap.set('.window-modern', { display: 'none' });
         
-        // Luego limpiamos el estado
         this.activeProject = null;
         
-        // Restauramos el scroll del body
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
         
-        // Esperamos un frame antes de reinicializar el scroll
         requestAnimationFrame(() => {
           this.initMagneticScroll();
         });
       });
     } else {
-      // Abrimos el modal con el nuevo proyecto
       this.activeProject = project;
       
-      // Matamos el observer de scroll
       if (this.scrollObserver) this.scrollObserver.kill();
       
-      // Bloqueamos el scroll
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       

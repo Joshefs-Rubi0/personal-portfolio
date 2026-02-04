@@ -104,12 +104,14 @@
 }
 
 @media (max-width: 768px) {
+    /* EFECTO TARJETERO MÓVIL - STICKY CON OVERLAP */
     .card-main { 
+        position: sticky !important;
+        top: 120px !important;
         height: auto; 
-        min-height: 70vh; 
-        top: 100px !important; 
-        margin-bottom: 10vh;
-        position: relative;
+        min-height: 75vh;
+        margin-bottom: 2rem !important;
+        scroll-snap-align: start;
     }
     
     /* MODAL FULLSCREEN EN MÓVIL */
@@ -142,11 +144,6 @@
     /* En móvil el ícono es MUY visible */
     .btn-expand-wrapper svg {
         color: rgba(255, 255, 255, 0.9) !important;
-    }
-    
-    /* Asegurar que el botón esté sobre todo */
-    .card-main > .btn-expand-wrapper {
-        position: absolute !important;
     }
     
     /* Ajustar padding del contenedor para que el botón no quede sobre la imagen */
