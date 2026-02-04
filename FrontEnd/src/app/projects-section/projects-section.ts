@@ -19,6 +19,8 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   activeProject: any = null;
   private isScrolling = false;
   private scrollObserver: any;
+  private lastScrollTime = 0;
+  private scrollCooldown = 800; // Tiempo mínimo entre scrolls (ms)
 
   projects = [
     { title: 'Melon Mind', category: 'FullStack', description: 'Generación automática de facturas a partir de tus citas registradas o facturas desde cero.', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop', demo_link: '#' },
@@ -46,13 +48,34 @@ export class ProjectsSection implements OnInit, AfterViewInit {
 
   private initMagneticScroll() {
     if (this.scrollObserver) this.scrollObserver.kill();
+    
     this.scrollObserver = ScrollTrigger.observe({
       type: "wheel,touch",
-      onDown: () => { if(!this.isScrolling && !this.activeProject) this.navigateCards(1); },
-      onUp: () => { if(!this.isScrolling && !this.activeProject) this.navigateCards(-1); },
-      tolerance: 25,
+      onDown: () => { 
+        if (!this.isScrolling && !this.activeProject) {
+          this.handleScrollWithCooldown(1);
+        }
+      },
+      onUp: () => { 
+        if (!this.isScrolling && !this.activeProject) {
+          this.handleScrollWithCooldown(-1);
+        }
+      },
+      tolerance: 50, // Aumentado para ser más restrictivo
       preventDefault: false
     });
+  }
+
+  private handleScrollWithCooldown(direction: number) {
+    const now = Date.now();
+    
+    // Verificar si ha pasado suficiente tiempo desde el último scroll
+    if (now - this.lastScrollTime < this.scrollCooldown) {
+      return; // Ignorar el scroll si está en cooldown
+    }
+    
+    this.lastScrollTime = now;
+    this.navigateCards(direction);
   }
 
   private navigateCards(direction: number) {
@@ -64,14 +87,21 @@ export class ProjectsSection implements OnInit, AfterViewInit {
     if (direction === 1) {
       for (let i = 0; i < cards.length; i++) {
         const card = cards[i] as HTMLElement;
-        if (card.offsetTop - threshold > currentScroll + 50) { targetCard = card; break; }
+        if (card.offsetTop - threshold > currentScroll + 50) { 
+          targetCard = card; 
+          break; 
+        }
       }
     } else {
       for (let i = cards.length - 1; i >= 0; i--) {
         const card = cards[i] as HTMLElement;
-        if (card.offsetTop - threshold < currentScroll - 50) { targetCard = card; break; }
+        if (card.offsetTop - threshold < currentScroll - 50) { 
+          targetCard = card; 
+          break; 
+        }
       }
     }
+    
     if (targetCard) this.performScroll(targetCard.offsetTop - threshold);
   }
 
@@ -81,7 +111,9 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       scrollTo: target, 
       duration: 0.8, 
       ease: "power4.out", 
-      onComplete: () => { this.isScrolling = false; } 
+      onComplete: () => { 
+        this.isScrolling = false;
+      } 
     });
   }
 

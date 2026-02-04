@@ -11,18 +11,31 @@
     cursor: pointer; overflow: hidden;
 }
 
-/* ICONO EXPANDIR FIX DEFINITIVO */
+/* ICONO EXPANDIR - INVISIBLE POR DEFECTO, VISIBLE AL HOVER */
 .btn-expand-wrapper {
-    width: 48px; height: 48px;
-    display: flex; align-items: center; justify-content: center;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 48px; 
+    height: 48px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
     cursor: pointer;
+    z-index: 20;
 }
 .icon-circle-bg {
-    position: absolute; inset: 0;
-    background: rgba(255, 255, 255, 0.1);
+    position: absolute; 
+    inset: 0;
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     transform: scale(0);
     transition: transform 0.3s ease;
+}
+/* El ícono es casi invisible por defecto */
+.btn-expand-wrapper svg {
+    color: rgba(255, 255, 255, 0.15) !important;
+    transition: color 0.3s ease;
 }
 /* Solo se activa cuando el ratón está específicamente sobre el icono */
 .btn-expand-wrapper:hover .icon-circle-bg { transform: scale(1); }
@@ -43,9 +56,18 @@
 }
 .btn-close-modern:hover .btn-circle-bg { transform: scale(1); }
 
-/* PILDORAS */
+/* PILDORAS CON HOVER SUTIL */
 .active-pill { background: white !important; color: black !important; }
-.pill-item { transition: all 0.3s ease; color: rgba(255,255,255,0.4); cursor: pointer; }
+.pill-item { 
+    transition: all 0.3s ease; 
+    color: rgba(255,255,255,0.4); 
+    cursor: pointer; 
+}
+/* Hover sutil para píldoras inactivas */
+.pill-item:not(.active-pill):hover { 
+    color: rgba(255,255,255,0.7);
+    background: rgba(255, 255, 255, 0.08);
+}
 
 /* ZOOM */
 .project-img-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -65,8 +87,78 @@
 }
 .window-modern.show-flex { display: flex; }
 
+/* SCROLLBAR CUSTOM */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 @media (max-width: 768px) {
-    .card-main { height: auto; min-height: 70vh; top: 100px !important; margin-bottom: 10vh; }
-    .window-modern { width: 100vw; height: 100vh; border-radius: 0; }
+    .card-main { 
+        height: auto; 
+        min-height: 70vh; 
+        top: 100px !important; 
+        margin-bottom: 10vh;
+        position: relative;
+    }
+    
+    /* MODAL FULLSCREEN EN MÓVIL */
+    .window-modern { 
+        width: 100vw !important; 
+        height: 100vh !important; 
+        border-radius: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+    }
+    
     .section-title { font-size: 3rem; }
+    
+    /* BOTÓN EXPANDIR EN MÓVIL - SUPERIOR DERECHA FUERA DE LA IMAGEN */
+    .btn-expand-wrapper {
+        position: absolute !important;
+        top: 1rem !important;
+        right: 1rem !important;
+        z-index: 30 !important;
+        width: 48px !important;
+        height: 48px !important;
+        background: rgba(20, 20, 22, 0.95) !important;
+        backdrop-filter: blur(12px);
+        border-radius: 50% !important;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* En móvil el ícono es MUY visible */
+    .btn-expand-wrapper svg {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    /* Asegurar que el botón esté sobre todo */
+    .card-main > .btn-expand-wrapper {
+        position: absolute !important;
+    }
+    
+    /* Ajustar padding del contenedor para que el botón no quede sobre la imagen */
+    .card-main > div:not(.btn-expand-wrapper) {
+        padding-top: 4rem !important;
+    }
+}
+
+@media (min-width: 768px) {
+    /* En desktop mantener el botón en su posición original */
+    .btn-expand-wrapper {
+        top: 2.5rem;
+        right: 2.5rem;
+    }
 }
