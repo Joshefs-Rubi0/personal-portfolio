@@ -1,19 +1,10 @@
-/* ====== CONTENEDOR HERO CON ALTURA ESTABLE ====== */
+/* ====== CONTENEDOR HERO SIMPLIFICADO ====== */
 .hero-container {
-  /* Altura fija que no cambia */
-  height: 100vh;
   min-height: 100vh;
-  max-height: 100vh;
-  
-  /* Para móviles - altura estable */
-  height: calc(var(--vh, 1vh) * 100);
-  min-height: calc(var(--vh, 1vh) * 100);
-  max-height: calc(var(--vh, 1vh) * 100);
-  
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden; /* Evita scrollbar interno */
+  width: 100%;
 }
 
 .hero-content {
@@ -22,41 +13,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 80px;
-  padding-bottom: 80px;
-  overflow-y: auto; /* Permite scroll interno si es necesario */
+  padding: 100px 0 100px 0;
   width: 100%;
+  gap: 1.5rem;
 }
 
-/* Fix para móviles - altura viewport dinámica */
+/* Ajustes para móvil */
 @media (max-width: 767px) {
-  .hero-container {
-    height: 100vh;
-    height: 100dvh; /* dvh = dynamic viewport height */
-    min-height: 100vh;
-    min-height: 100dvh;
-    max-height: 100vh;
-    max-height: 100dvh;
-  }
-  
   .hero-content {
-    padding-top: 70px;
-    padding-bottom: 80px;
+    padding: 90px 0 90px 0;
+    gap: 1rem;
   }
 }
 
-/* ====== ESPACIO PARA NAVBAR ====== */
+/* ====== RESTO DE ESTILOS ====== */
 html {
   scroll-padding-top: 90px;
   scroll-behavior: auto;
-  /* Fix para iOS */
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  /* Evita bounce en iOS */
-  overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
 }
 
 #animated-word {
@@ -64,7 +37,6 @@ body {
   display: inline-block;
 }
 
-/* ====== ANIMACIÓN DE FLECHA ====== */
 @keyframes scroll-arrow {
   0%   { transform: translateY(0); opacity: .5; }
   50%  { transform: translateY(10px); opacity: 1; }
@@ -75,7 +47,6 @@ body {
   animation: scroll-arrow 1s ease-in-out infinite;
 }
 
-/* ====== SHIMMER TEXTO ====== */
 .shimmer-text {
   background: linear-gradient(90deg, #facc15, #ffffff, #facc15);
   background-size: 200% auto;
@@ -90,7 +61,6 @@ body {
   100% { background-position: 200% center; }
 }
 
-/* ====== ICONOS ====== */
 .icon-wrapper {
   position: relative;
   transition: all 0.3s ease;
@@ -101,9 +71,6 @@ body {
   -ms-user-select: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
   user-drag: none;
 }
 
@@ -114,12 +81,9 @@ body {
 .icon-wrapper i {
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   pointer-events: none;
 }
 
-/* ====== TOOLTIPS MEJORADOS PARA MÓVIL ====== */
 .tech-tooltip {
   position: absolute;
   left: 50%;
@@ -138,8 +102,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 @media (min-width: 768px) {
@@ -164,14 +126,11 @@ body {
   }
 }
 
-/* ====== BOTÓN SCROLL DOWN ====== */
 .scroll-trigger {
   outline: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 .scroll-trigger:focus {
