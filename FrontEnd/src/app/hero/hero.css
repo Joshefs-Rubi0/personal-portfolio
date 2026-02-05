@@ -1,3 +1,37 @@
+/* ====== CONTENEDOR HERO CON ALTURA FIJA ====== */
+.hero-container {
+  min-height: 100vh;
+  min-height: 100svh; /* Usa svh para móviles (small viewport height) */
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 80px; /* Espacio para el navbar */
+  padding-bottom: 60px; /* Espacio para la flecha */
+}
+
+/* Ajustes específicos para móvil */
+@media (max-width: 767px) {
+  .hero-container {
+    min-height: 100vh;
+    min-height: -webkit-fill-available; /* Safari iOS fix */
+  }
+  
+  .hero-content {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+}
+
 /* ====== ESPACIO PARA NAVBAR ====== */
 html {
   scroll-padding-top: 90px;
@@ -26,6 +60,7 @@ html {
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
+  background-clip: text;
   animation: shimmer 3s linear infinite;
 }
 
@@ -38,10 +73,33 @@ html {
 .icon-wrapper {
   position: relative;
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  /* Evitar selección de texto */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  /* Evitar tap highlight en móviles */
+  -webkit-tap-highlight-color: transparent;
+  /* Evitar que se pueda arrastrar */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }
 
 .icon-wrapper:hover {
   transform: translateY(-6px) scale(1.12);
+}
+
+/* Evitar selección en los iconos devicon */
+.icon-wrapper i {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
 }
 
 /* ====== TOOLTIPS MEJORADOS PARA MÓVIL ====== */
@@ -61,6 +119,11 @@ html {
   z-index: 100;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Evitar selección del tooltip */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 /* Desktop - tooltip abajo */
@@ -86,17 +149,17 @@ html {
   .icon-wrapper:active .tech-tooltip {
     opacity: 1;
   }
-  
-  /* Alternativa: mostrar siempre en móvil al hacer tap */
-  .icon-wrapper.show-tooltip .tech-tooltip {
-    opacity: 1;
-  }
 }
 
 /* ====== BOTÓN SCROLL DOWN ====== */
 .scroll-trigger {
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  /* Evitar selección */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .scroll-trigger:focus {
@@ -105,4 +168,11 @@ html {
 
 .scroll-trigger:active {
   transform: scale(0.95);
+}
+
+/* Evitar selección del SVG de la flecha */
+.scroll-trigger svg {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
