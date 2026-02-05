@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import * as AOS from 'aos';
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -11,8 +11,9 @@ gsap.registerPlugin(ScrollToPlugin);
   templateUrl: './hero.html',
   styleUrls: ['./hero.css'],
 })
-export class Hero implements AfterViewInit {
+export class Hero implements AfterViewInit, OnDestroy {
   private scrollAnimation: gsap.core.Tween | null = null;
+  private isAnimating = false;
 
   ngAfterViewInit() {
     // Inicializar AOS
@@ -35,7 +36,7 @@ export class Hero implements AfterViewInit {
       }, 2000);
     }
 
-    // Scroll suave con GSAP (IGUAL QUE PROJECTS-SECTION)
+    // Scroll suave con GSAP
     const scrollTrigger = document.querySelector(".scroll-trigger") as HTMLElement;
     const container = document.querySelector("#section-index") as HTMLElement;
 
@@ -46,18 +47,33 @@ export class Hero implements AfterViewInit {
       });
     }
 
-    // Detectar scroll manual del usuario para cancelar la animación
+    // Detectar scroll manual continuo
     if (container) {
-      const cancelAnimation = () => {
-        if (this.scrollAnimation) {
+      container.addEventListener('scroll', () => {
+        if (this.isAnimating && this.scrollAnimation) {
           this.scrollAnimation.kill();
           this.scrollAnimation = null;
+          this.isAnimating = false;
+        }
+      }, { passive: true });
+
+      const cancelAnimation = () => {
+        if (this.scrollAnimation && this.isAnimating) {
+          this.scrollAnimation.kill();
+          this.scrollAnimation = null;
+          this.isAnimating = false;
         }
       };
 
-      // Cancelar en scroll manual (wheel o touch)
       container.addEventListener('wheel', cancelAnimation, { passive: true });
       container.addEventListener('touchstart', cancelAnimation, { passive: true });
+      container.addEventListener('touchmove', cancelAnimation, { passive: true });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.scrollAnimation) {
+      this.scrollAnimation.kill();
     }
   }
 
@@ -67,23 +83,23 @@ export class Hero implements AfterViewInit {
     
     if (!container || !target) return;
 
-    // Matar animación anterior si existe
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
 
-    // Calcular posición exacta
     const containerRect = container.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
     const targetPosition = container.scrollTop + targetRect.top - containerRect.top;
 
-    // USAR GSAP CON EL MISMO EASING Y DURACIÓN QUE PROJECTS-SECTION
+    this.isAnimating = true;
+
     this.scrollAnimation = gsap.to(container, {
       scrollTo: targetPosition,
       duration: 0.8,
       ease: "power4.out",
       onComplete: () => {
         this.scrollAnimation = null;
+        this.isAnimating = false;
       }
     });
   }
