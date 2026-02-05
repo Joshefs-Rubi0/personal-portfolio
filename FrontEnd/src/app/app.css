@@ -111,6 +111,15 @@
     font-weight: bold;
     text-align: center !important;
   }
+
+  .nav-button:active { 
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0.98);
+  }
+  
+  .mobile-toggle:active {
+    transform: scale(0.95);
+  }
 }
 
 /* --- UTILIDADES --- */
@@ -139,16 +148,4 @@
 #solicitar-demo[directActionOn] {
   background: #fff;
   color: #000;
-}
-
-/* Deshabilitar hover en dispositivos táctiles */
-@media (hover: none) and (pointer: coarse) {
-  .nav-button:hover { 
-    background: transparent !important; 
-  }
-  
-  [nav-compacted]:hover {
-    transform: translateX(-50%) scale(1) !important;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
-  }
 }
