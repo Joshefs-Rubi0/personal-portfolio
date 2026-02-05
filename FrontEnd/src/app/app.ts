@@ -17,15 +17,29 @@ export class App implements AfterViewInit {
   mobileMenuOpen = signal(false);
 
   ngAfterViewInit() {
-    const activeSection = document.querySelector("#section-index");
-    if (activeSection) {
-      activeSection.addEventListener('scroll', () => {
-        const scrollValue = activeSection.scrollTop;
-        this.isCompacted.set(scrollValue > 50); // Activamos la compactación a los 50px
-      });
-    }
+  const activeSection = document.querySelector("#section-index");
+  if (activeSection) {
+    activeSection.addEventListener('scroll', () => {
+      const scrollValue = activeSection.scrollTop;
+      this.isCompacted.set(scrollValue > 50);
+    });
   }
 
+  // Sistema de limpieza de hover para móviles
+  if ('ontouchstart' in window) {
+    let touchTimeout: any;
+    
+    document.addEventListener('touchend', () => {
+      // Desactivar hover temporalmente
+      document.body.classList.add('disable-hover');
+      
+      clearTimeout(touchTimeout);
+      touchTimeout = setTimeout(() => {
+        document.body.classList.remove('disable-hover');
+      }, 500); // 300ms sin hover después de cada touch
+    }, { passive: true });
+  }
+}
   toggleMenu() {
     this.mobileMenuOpen.update(val => !val);
   }

@@ -111,15 +111,6 @@
     font-weight: bold;
     text-align: center !important;
   }
-
-  .nav-button:active { 
-    background: rgba(255, 255, 255, 0.15);
-    transform: scale(0.98);
-  }
-  
-  .mobile-toggle:active {
-    transform: scale(0.95);
-  }
 }
 
 /* --- UTILIDADES --- */
@@ -148,4 +139,13 @@
 #solicitar-demo[directActionOn] {
   background: #fff;
   color: #000;
+}
+
+/* Desactivar hover temporalmente después de touch */
+body.disable-hover * {
+  pointer-events: none !important;
+}
+
+body.disable-hover {
+  pointer-events: auto !important;
 }
