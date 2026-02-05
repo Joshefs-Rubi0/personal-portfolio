@@ -20,7 +20,8 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   private isScrolling = false;
   private scrollObserver: any;
   private lastScrollTime = 0;
-  private scrollCooldown = 800; // Tiempo mínimo entre scrolls (ms)
+  private scrollCooldown = 800;
+  private currentScrollAnimation: gsap.core.Tween | null = null;
 
   projects = [
     { title: 'Melon Mind', category: 'FullStack', description: 'Generación automática de facturas a partir de tus citas registradas o facturas desde cero.', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop', demo_link: '#' },
@@ -62,7 +63,15 @@ export class ProjectsSection implements OnInit, AfterViewInit {
         }
       },
       tolerance: 50,
-      preventDefault: false
+      preventDefault: false,
+      onChangeY: () => {
+        // Cancelar animación si el usuario hace scroll manual
+        if (this.currentScrollAnimation) {
+          this.currentScrollAnimation.kill();
+          this.currentScrollAnimation = null;
+          this.isScrolling = false;
+        }
+      }
     });
   }
 
@@ -79,8 +88,6 @@ export class ProjectsSection implements OnInit, AfterViewInit {
 
   private getResponsiveThreshold(): number {
     const isMobile = window.innerWidth < 768;
-    // En móvil: 120px (coincide con top: 120px del CSS)
-    // En desktop: 110px (valor original)
     return isMobile ? 120 : 110;
   }
 
@@ -112,13 +119,20 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   }
 
   private performScroll(target: number) {
+    // Cancelar animación anterior si existe
+    if (this.currentScrollAnimation) {
+      this.currentScrollAnimation.kill();
+    }
+
     this.isScrolling = true;
-    gsap.to(window, { 
+    
+    this.currentScrollAnimation = gsap.to(window, { 
       scrollTo: target, 
-      duration: 0.8, 
+      duration: 2, 
       ease: "power4.out", 
       onComplete: () => { 
         this.isScrolling = false;
+        this.currentScrollAnimation = null;
       } 
     });
   }

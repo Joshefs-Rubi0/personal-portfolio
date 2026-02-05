@@ -1,9 +1,6 @@
 /* ====== ESPACIO PARA NAVBAR ====== */
 html {
   scroll-padding-top: 90px;
-}
-
-html {
   scroll-behavior: auto;
 }
 
@@ -45,13 +42,4 @@ html {
 
 .icon-wrapper:hover {
   transform: translateY(-6px) scale(1.12);
-}
-
-/* ====== SCROLL SUAVE ESTILO WEBFLOW ====== */
-html.is-scrolling {
-  scroll-behavior: smooth;
-  transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1);
-}
-html.is-scrolling:focus-within {
-  scroll-behavior: auto;
 }

@@ -21,7 +21,7 @@ export class App implements AfterViewInit {
     if (activeSection) {
       activeSection.addEventListener('scroll', () => {
         const scrollValue = activeSection.scrollTop;
-        this.isCompacted.set(scrollValue > 50); // Activamos la compactación a los 50px
+        this.isCompacted.set(scrollValue > 50);
       });
     }
   }
@@ -30,11 +30,34 @@ export class App implements AfterViewInit {
     this.mobileMenuOpen.update(val => !val);
   }
 
-  scrollTo(position: number) {
+  scrollTo(position: number | string) {
     const container = document.querySelector('#section-index');
-    if (container) {
-      container.scrollTo({ top: position, behavior: 'smooth' });
+    if (!container) return;
+
+    let targetPosition = 0;
+
+    // Si es un string, buscar el elemento
+    if (typeof position === 'string') {
+      const targetElement = document.querySelector(position);
+      if (targetElement) {
+        // Obtener la posición del elemento relativo al contenedor scrolleable
+        const containerRect = container.getBoundingClientRect();
+        const elementRect = targetElement.getBoundingClientRect();
+        
+        // Calcular posición exacta considerando el scroll actual
+        targetPosition = container.scrollTop + elementRect.top - containerRect.top;
+      }
+    } else {
+      targetPosition = position;
     }
+
+    container.scrollTo({ top: targetPosition, behavior: 'smooth' });
+  }
+
+  // Método específico para ir a proyectos
+  scrollToProjects() {
+    this.scrollTo('#next-section');
+    this.mobileMenuOpen.set(false); // Cerrar menú móvil si está abierto
   }
 
   openDemo() {
