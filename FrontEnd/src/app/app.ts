@@ -21,6 +21,7 @@ export class App implements AfterViewInit {
   isCompacted = signal(false);
   mobileMenuOpen = signal(false);
   private scrollAnimation: gsap.core.Tween | null = null;
+  private isScrollingProgrammatically = false;
 
   constructor(
     private titleService: Title,
@@ -31,22 +32,18 @@ export class App implements AfterViewInit {
   }
 
   private setSEO() {
-    // Title optimizado
     this.titleService.setTitle('Joshefs Rubio - Full Stack Developer Angular & AWS | ADAE, OCUA, Raíces de la Vida');
     
-    // Meta description con proyectos
     this.metaService.updateTag({ 
       name: 'description', 
       content: 'Joshefs Agustín Rubio Carrillo - Full Stack Developer en Puebla, México. Creador de ADAE (gestión educativa), OCUA (IA horarios universitarios) y Raíces de la Vida. Especialista en Angular, TypeScript, AWS, PHP y MySQL.' 
     });
     
-    // Keywords extensivas
     this.metaService.updateTag({ 
       name: 'keywords', 
       content: 'Joshefs Rubio, Joshefs Agustín Rubio Carrillo, Full Stack Developer Puebla, Angular Developer México, AWS Developer, TypeScript, PHP MySQL, ADAE sistema educativo, OCUA horarios IA, desarrollador web Puebla, programador Angular, cloud computing AWS, desarrollador freelance México' 
     });
     
-    // Open Graph actualizado
     this.metaService.updateTag({ 
       property: 'og:title', 
       content: 'Joshefs Rubio - Full Stack Developer | ADAE, OCUA, Raíces de la Vida' 
@@ -57,7 +54,6 @@ export class App implements AfterViewInit {
       content: 'Full Stack Developer especializado en Angular, TypeScript, AWS Cloud. Creador de ADAE, OCUA y Raíces de la Vida. Portfolio profesional con proyectos reales en Puebla, México.' 
     });
     
-    // Twitter Card
     this.metaService.updateTag({ 
       name: 'twitter:title', 
       content: 'Joshefs Rubio - Full Stack Developer Angular & AWS' 
@@ -65,7 +61,7 @@ export class App implements AfterViewInit {
     
     this.metaService.updateTag({ 
       name: 'twitter:description', 
-      content: 'Creador de ADAE, OCUA y Raíces de la Vida. Especialista en Angular, TypeScript y AWS Cloud.' 
+      content: 'CEO de ADAE, OCUA y Raíces de la Vida. Especialista en Angular, TypeScript y AWS Cloud.' 
     });
   }
 
@@ -77,8 +73,9 @@ export class App implements AfterViewInit {
         this.isCompacted.set(scrollValue > 50);
       });
 
+      // Solo cancelar animación si NO es scroll programático
       const cancelAnimation = () => {
-        if (this.scrollAnimation) {
+        if (this.scrollAnimation && !this.isScrollingProgrammatically) {
           this.scrollAnimation.kill();
           this.scrollAnimation = null;
         }
@@ -119,27 +116,47 @@ export class App implements AfterViewInit {
     
     if (!container || !target) return;
 
+    // Cancelar animación anterior
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
 
     const containerRect = container.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
-    const targetPosition = container.scrollTop + targetRect.top - containerRect.top;
+    const currentScroll = container.scrollTop;
+    const targetPosition = currentScroll + targetRect.top - containerRect.top;
+
+    // Marcar que estamos haciendo scroll programático
+    this.isScrollingProgrammatically = true;
 
     this.scrollAnimation = gsap.to(container, {
-      scrollTo: targetPosition,
-      duration: 0.8,
-      ease: "power4.out",
+      scrollTo: {
+        y: targetPosition,
+        autoKill: false
+      },
+      duration: 1.2,
+      ease: "power3.inOut",
       onComplete: () => {
         this.scrollAnimation = null;
+        this.isScrollingProgrammatically = false;
+      },
+      onInterrupt: () => {
+        this.scrollAnimation = null;
+        this.isScrollingProgrammatically = false;
       }
     });
     
     this.mobileMenuOpen.set(false);
   }
 
-  openDemo() {
-    window.location.href = '';
+  openMail() {
+    const user = 'joshefsrubio';
+    const domain = 'gmail.com';
+
+    const email = `${user}@${domain}`;
+    const subject = encodeURIComponent('Contacto desde tu portfolio');
+    const body = encodeURIComponent('Hola Joshefs,\n\nMe gustaría ponerme en contacto contigo.');
+
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   }
 }

@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollToPlugin);
 })
 export class Hero implements AfterViewInit, OnDestroy {
   private scrollAnimation: gsap.core.Tween | null = null;
-  private isAnimating = false;
+  private isScrollingProgrammatically = false;
 
   ngAfterViewInit() {
     // Inicializar AOS
@@ -38,36 +38,13 @@ export class Hero implements AfterViewInit, OnDestroy {
 
     // Scroll suave con GSAP
     const scrollTrigger = document.querySelector(".scroll-trigger") as HTMLElement;
-    const container = document.querySelector("#section-index") as HTMLElement;
 
     if (scrollTrigger) {
       scrollTrigger.addEventListener("click", (e) => {
         e.preventDefault();
+        e.stopPropagation();
         this.scrollToProjects();
       });
-    }
-
-    // Detectar scroll manual continuo
-    if (container) {
-      container.addEventListener('scroll', () => {
-        if (this.isAnimating && this.scrollAnimation) {
-          this.scrollAnimation.kill();
-          this.scrollAnimation = null;
-          this.isAnimating = false;
-        }
-      }, { passive: true });
-
-      const cancelAnimation = () => {
-        if (this.scrollAnimation && this.isAnimating) {
-          this.scrollAnimation.kill();
-          this.scrollAnimation = null;
-          this.isAnimating = false;
-        }
-      };
-
-      container.addEventListener('wheel', cancelAnimation, { passive: true });
-      container.addEventListener('touchstart', cancelAnimation, { passive: true });
-      container.addEventListener('touchmove', cancelAnimation, { passive: true });
     }
   }
 
@@ -81,25 +58,47 @@ export class Hero implements AfterViewInit, OnDestroy {
     const container = document.querySelector("#section-index") as HTMLElement;
     const target = document.querySelector("#next-section") as HTMLElement;
     
-    if (!container || !target) return;
+    if (!container || !target) {
+      console.error('Container or target not found');
+      return;
+    }
 
+    // Cancelar cualquier animación previa
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
 
+    // Calcular posición exacta
     const containerRect = container.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
-    const targetPosition = container.scrollTop + targetRect.top - containerRect.top;
+    const currentScroll = container.scrollTop;
+    const targetPosition = currentScroll + targetRect.top - containerRect.top;
 
-    this.isAnimating = true;
+    console.log('Hero: Scrolling from', currentScroll, 'to', targetPosition);
 
+    // Marcar que es scroll programático
+    this.isScrollingProgrammatically = true;
+
+    // Usar scrollTo con configuración optimizada
     this.scrollAnimation = gsap.to(container, {
-      scrollTo: targetPosition,
-      duration: 0.8,
-      ease: "power4.out",
+      scrollTo: {
+        y: targetPosition,
+        autoKill: false
+      },
+      duration: 1.2,
+      ease: "power3.inOut",
+      onStart: () => {
+        console.log('Hero: Animation started');
+      },
       onComplete: () => {
+        console.log('Hero: Animation completed');
         this.scrollAnimation = null;
-        this.isAnimating = false;
+        this.isScrollingProgrammatically = false;
+      },
+      onInterrupt: () => {
+        console.log('Hero: Animation interrupted');
+        this.scrollAnimation = null;
+        this.isScrollingProgrammatically = false;
       }
     });
   }

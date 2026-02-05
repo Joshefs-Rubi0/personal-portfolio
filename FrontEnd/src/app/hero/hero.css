@@ -43,3 +43,66 @@ html {
 .icon-wrapper:hover {
   transform: translateY(-6px) scale(1.12);
 }
+
+/* ====== TOOLTIPS MEJORADOS PARA MÓVIL ====== */
+.tech-tooltip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Desktop - tooltip abajo */
+@media (min-width: 768px) {
+  .tech-tooltip {
+    bottom: -2.5rem;
+    top: auto;
+  }
+  
+  .icon-wrapper:hover .tech-tooltip {
+    opacity: 1;
+  }
+}
+
+/* Mobile - tooltip arriba para evitar que se corte */
+@media (max-width: 767px) {
+  .tech-tooltip {
+    top: -2.5rem;
+    bottom: auto;
+  }
+  
+  /* Activar tooltip con tap en móvil */
+  .icon-wrapper:active .tech-tooltip {
+    opacity: 1;
+  }
+  
+  /* Alternativa: mostrar siempre en móvil al hacer tap */
+  .icon-wrapper.show-tooltip .tech-tooltip {
+    opacity: 1;
+  }
+}
+
+/* ====== BOTÓN SCROLL DOWN ====== */
+.scroll-trigger {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-trigger:focus {
+  outline: none;
+}
+
+.scroll-trigger:active {
+  transform: scale(0.95);
+}

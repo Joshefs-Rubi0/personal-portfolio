@@ -26,13 +26,14 @@
 
     <div class="simple-container grow-0-1 gap-4">
       <button 
-        class="nav-button outline-light-1 hover-outline hide-on-mobile" 
-        id="solicitar-demo" 
-        [attr.directActionOn]="isCompacted() ? '' : null"
-        (click)="openDemo()"
-      >
-        Contacto
-      </button>
+  class="nav-button outline-light-1 hover-outline hide-on-mobile" 
+  id="solicitar-demo"
+  [attr.directActionOn]="isCompacted() ? '' : null"
+  (click)="openMail()"
+>
+  Contacto
+</button>
+
 
       <button class="mobile-toggle only-on-mobile" (click)="toggleMenu()">
         <span class="material-symbols-rounded">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
@@ -43,7 +44,7 @@
   <div class="mobile-drawer only-on-mobile" [class.active]="mobileMenuOpen()">
     <button (click)="scrollToProjects()">Proyectos</button>
     <button (click)="scrollTo(4150); toggleMenu()">Precios</button>
-    <button class="demo-mobile" (click)="openDemo()">Contacto</button>
+    <button class="demo-mobile" (click)="openMail()">Contacto</button>
   </div>
 </nav>
 
