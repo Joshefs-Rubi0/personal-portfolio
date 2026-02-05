@@ -25,18 +25,34 @@ export class App implements AfterViewInit {
     });
   }
 
-  // Sistema de limpieza de hover para móviles
+  // Solución definitiva para limpiar hover en móviles
   if ('ontouchstart' in window) {
-    let touchTimeout: any;
-    
-    document.addEventListener('touchend', () => {
-      // Desactivar hover temporalmente
-      document.body.classList.add('disable-hover');
+    document.addEventListener('touchstart', () => {
+      document.body.classList.add('using-touch');
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const target = e.target as HTMLElement;
       
-      clearTimeout(touchTimeout);
-      touchTimeout = setTimeout(() => {
-        document.body.classList.remove('disable-hover');
-      }, 500); // 300ms sin hover después de cada touch
+      // Crear un elemento invisible temporal para robar el foco
+      const dummyElement = document.createElement('input');
+      dummyElement.style.position = 'fixed';
+      dummyElement.style.opacity = '0';
+      dummyElement.style.pointerEvents = 'none';
+      document.body.appendChild(dummyElement);
+      
+      // Dar foco al elemento dummy
+      dummyElement.focus();
+      
+      // Quitar foco del elemento tocado
+      if (target) {
+        target.blur();
+      }
+      
+      // Eliminar el elemento dummy después de un momento
+      setTimeout(() => {
+        dummyElement.remove();
+      }, 100);
     }, { passive: true });
   }
 }

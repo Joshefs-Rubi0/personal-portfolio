@@ -141,11 +141,20 @@
   color: #000;
 }
 
-/* Desactivar hover temporalmente después de touch */
-body.disable-hover * {
-  pointer-events: none !important;
+/* Deshabilitar hover cuando se está usando touch */
+body.using-touch .nav-button:hover {
+  background: transparent !important;
 }
 
-body.disable-hover {
-  pointer-events: auto !important;
+body.using-touch [nav-compacted]:hover {
+  transform: translateX(-50%) scale(1) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+}
+
+/* Mantener el efecto active para feedback táctil */
+@media only screen and (max-width: 679px) {
+  .nav-button:active {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transition: background 0.1s ease;
+  }
 }
