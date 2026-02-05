@@ -1,0 +1,23 @@
+# ========================================================
+# Joshefs Rubio - Full Stack Developer Portfolio
+# ========================================================
+
+User-agent: *
+Allow: /
+
+# Bots específicos de búsqueda
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Bloquear bots de IA que solo "scrappan" contenido sin dar crédito (Opcional pero recomendado)
+User-agent: GPTBot
+Disallow: /
+
+# Referencia al sitemap
+Sitemap: https://joshefs-rubi0.github.io/personal-portfolio/sitemap.xml
