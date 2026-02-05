@@ -4,6 +4,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
 }
+
 #section-index::-webkit-scrollbar {
   display: none;
 }
@@ -35,9 +36,14 @@
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 
+  /* SOLO hover en desktop */
   [nav-compacted]:hover {
     transform: translateX(-50%) scale(1.02) !important;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 0 24px 0 rgba(0,0,0,0.4);
+  }
+
+  .nav-button:hover { 
+    background: rgba(255, 255, 255, 0.1); 
   }
 
   .only-on-mobile { display: none !important; }
@@ -56,6 +62,21 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
+  /* Deshabilitar hover en móvil */
+  .nav-button:hover { 
+    background: transparent !important; 
+  }
+  
+  [nav-compacted]:hover {
+    transform: translateX(-50%) scale(1) !important;
+    box-shadow: none !important;
+  }
+
+  /* Feedback táctil */
+  .nav-button:active {
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+
   .mobile-toggle {
     background: white;
     color: black;
@@ -67,6 +88,11 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .mobile-toggle:active {
+    transform: scale(0.9);
   }
 
   .mobile-drawer {
@@ -103,6 +129,11 @@
     text-align: left;
     font-family: inherit;
     font-weight: 500;
+    transition: background 0.1s ease;
+  }
+
+  .mobile-drawer button:active {
+    background: rgba(255, 255, 255, 0.15) !important;
   }
 
   .demo-mobile {
@@ -132,23 +163,10 @@
   transition: all 0.3s ease;
   font-family: inherit;
   font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
 }
-
-.nav-button:hover { background: rgba(255, 255, 255, 0.1); }
 
 #solicitar-demo[directActionOn] {
   background: #fff;
   color: #000;
-}
-
-/* Deshabilitar hover en dispositivos táctiles */
-@media (hover: none) and (pointer: coarse) {
-  .nav-button:hover { 
-    background: transparent !important; 
-  }
-  
-  [nav-compacted]:hover {
-    transform: translateX(-50%) scale(1) !important;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
-  }
 }

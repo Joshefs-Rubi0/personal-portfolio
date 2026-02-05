@@ -16,6 +16,11 @@ export class Hero implements AfterViewInit, OnDestroy {
   private isScrollingProgrammatically = false;
 
   ngAfterViewInit() {
+    // Fix para altura viewport en móviles
+    this.setVHVariable();
+    window.addEventListener('resize', this.setVHVariable);
+    window.addEventListener('orientationchange', this.setVHVariable);
+
     // Inicializar AOS
     AOS.init({
       duration: 1000,
@@ -52,6 +57,14 @@ export class Hero implements AfterViewInit, OnDestroy {
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
+    window.removeEventListener('resize', this.setVHVariable);
+    window.removeEventListener('orientationchange', this.setVHVariable);
+  }
+
+  // Fix para altura viewport en móviles
+  private setVHVariable = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
   private scrollToProjects() {
@@ -63,12 +76,10 @@ export class Hero implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Cancelar cualquier animación previa
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
 
-    // Calcular posición exacta
     const containerRect = container.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
     const currentScroll = container.scrollTop;
@@ -76,16 +87,14 @@ export class Hero implements AfterViewInit, OnDestroy {
 
     console.log('Hero: Scrolling from', currentScroll, 'to', targetPosition);
 
-    // Marcar que es scroll programático
     this.isScrollingProgrammatically = true;
 
-    // Usar scrollTo con configuración optimizada
     this.scrollAnimation = gsap.to(container, {
       scrollTo: {
         y: targetPosition,
         autoKill: false
       },
-      duration: 1.2,
+      duration: 1,
       ease: "power3.inOut",
       onStart: () => {
         console.log('Hero: Animation started');

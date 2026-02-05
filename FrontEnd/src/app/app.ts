@@ -134,7 +134,7 @@ export class App implements AfterViewInit {
         y: targetPosition,
         autoKill: false
       },
-      duration: 1.2,
+      duration: 1,
       ease: "power3.inOut",
       onComplete: () => {
         this.scrollAnimation = null;

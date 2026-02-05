@@ -1,12 +1,19 @@
-/* ====== CONTENEDOR HERO CON ALTURA FIJA ====== */
+/* ====== CONTENEDOR HERO CON ALTURA ESTABLE ====== */
 .hero-container {
-  min-height: 100vh;
-  min-height: 100svh; /* Usa svh para móviles (small viewport height) */
+  /* Altura fija que no cambia */
   height: 100vh;
-  height: 100svh;
+  min-height: 100vh;
+  max-height: 100vh;
+  
+  /* Para móviles - altura estable */
+  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
+  max-height: calc(var(--vh, 1vh) * 100);
+  
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden; /* Evita scrollbar interno */
 }
 
 .hero-content {
@@ -15,20 +22,26 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 80px; /* Espacio para el navbar */
-  padding-bottom: 60px; /* Espacio para la flecha */
+  padding-top: 80px;
+  padding-bottom: 80px;
+  overflow-y: auto; /* Permite scroll interno si es necesario */
+  width: 100%;
 }
 
-/* Ajustes específicos para móvil */
+/* Fix para móviles - altura viewport dinámica */
 @media (max-width: 767px) {
   .hero-container {
+    height: 100vh;
+    height: 100dvh; /* dvh = dynamic viewport height */
     min-height: 100vh;
-    min-height: -webkit-fill-available; /* Safari iOS fix */
+    min-height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
   }
   
   .hero-content {
     padding-top: 70px;
-    padding-bottom: 70px;
+    padding-bottom: 80px;
   }
 }
 
@@ -36,6 +49,14 @@
 html {
   scroll-padding-top: 90px;
   scroll-behavior: auto;
+  /* Fix para iOS */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* Evita bounce en iOS */
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #animated-word {
@@ -74,14 +95,11 @@ html {
   position: relative;
   transition: all 0.3s ease;
   flex-shrink: 0;
-  /* Evitar selección de texto */
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  /* Evitar tap highlight en móviles */
   -webkit-tap-highlight-color: transparent;
-  /* Evitar que se pueda arrastrar */
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -93,7 +111,6 @@ html {
   transform: translateY(-6px) scale(1.12);
 }
 
-/* Evitar selección en los iconos devicon */
 .icon-wrapper i {
   user-select: none;
   -webkit-user-select: none;
@@ -119,14 +136,12 @@ html {
   z-index: 100;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  /* Evitar selección del tooltip */
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
 
-/* Desktop - tooltip abajo */
 @media (min-width: 768px) {
   .tech-tooltip {
     bottom: -2.5rem;
@@ -138,14 +153,12 @@ html {
   }
 }
 
-/* Mobile - tooltip arriba para evitar que se corte */
 @media (max-width: 767px) {
   .tech-tooltip {
     top: -2.5rem;
     bottom: auto;
   }
   
-  /* Activar tooltip con tap en móvil */
   .icon-wrapper:active .tech-tooltip {
     opacity: 1;
   }
@@ -155,7 +168,6 @@ html {
 .scroll-trigger {
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  /* Evitar selección */
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -170,7 +182,6 @@ html {
   transform: scale(0.95);
 }
 
-/* Evitar selección del SVG de la flecha */
 .scroll-trigger svg {
   pointer-events: none;
   user-select: none;
