@@ -55,40 +55,27 @@ export class Hero implements AfterViewInit, OnDestroy {
   }
 
   private scrollToProjects() {
-    const container = document.querySelector("#section-index") as HTMLElement;
-    const target = document.querySelector("#next-section") as HTMLElement;
-    
-    if (!container || !target) {
-      console.error('Container or target not found');
-      return;
+  const container = document.querySelector("#section-index") as HTMLElement;
+  const target = document.querySelector("#next-section") as HTMLElement;
+  
+  if (!container || !target) return;
+
+  // Matar cualquier animación previa para evitar acumulación
+  gsap.killTweensOf(container);
+
+  this.isScrollingProgrammatically = true;
+
+  gsap.to(container, {
+    scrollTo: {
+      y: target, // GSAP es inteligente, puedes pasarle el elemento directamente
+      autoKill: true, // SI EL USUARIO SCROLLEA, LA ANIMACIÓN SE MATA SOLA (Fix del bug)
+      offsetY: 0
+    },
+    duration: 1.2, // Un poco más rápido para que se sienta más responsivo
+    ease: "power4.out", // Empieza rápido y frena suave
+    onComplete: () => {
+      this.isScrollingProgrammatically = false;
     }
-
-    if (this.scrollAnimation) {
-      this.scrollAnimation.kill();
-    }
-
-    const containerRect = container.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-    const currentScroll = container.scrollTop;
-    const targetPosition = currentScroll + targetRect.top - containerRect.top;
-
-    this.isScrollingProgrammatically = true;
-
-    this.scrollAnimation = gsap.to(container, {
-      scrollTo: {
-        y: targetPosition,
-        autoKill: false
-      },
-      duration: 1,
-      ease: "power3.inOut",
-      onComplete: () => {
-        this.scrollAnimation = null;
-        this.isScrollingProgrammatically = false;
-      },
-      onInterrupt: () => {
-        this.scrollAnimation = null;
-        this.isScrollingProgrammatically = false;
-      }
-    });
-  }
+  });
+}
 }

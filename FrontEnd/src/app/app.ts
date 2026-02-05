@@ -21,7 +21,6 @@ export class App implements AfterViewInit {
   isCompacted = signal(false);
   mobileMenuOpen = signal(false);
   private scrollAnimation: gsap.core.Tween | null = null;
-  private isScrollingProgrammatically = false;
 
   constructor(
     private titleService: Title,
@@ -66,23 +65,15 @@ export class App implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const activeSection = document.querySelector("#section-index");
-    if (activeSection) {
-      activeSection.addEventListener('scroll', () => {
-        const scrollValue = activeSection.scrollTop;
-        this.isCompacted.set(scrollValue > 50);
-      });
-
-      // Solo cancelar animación si NO es scroll programático
-      const cancelAnimation = () => {
-        if (this.scrollAnimation && !this.isScrollingProgrammatically) {
-          this.scrollAnimation.kill();
-          this.scrollAnimation = null;
-        }
-      };
-
-      activeSection.addEventListener('wheel', cancelAnimation, { passive: true });
-      activeSection.addEventListener('touchstart', cancelAnimation, { passive: true });
+    // Solo ejecutamos lógica de DOM si estamos en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      const activeSection = document.querySelector("#section-index");
+      if (activeSection) {
+        activeSection.addEventListener('scroll', () => {
+          const scrollValue = activeSection.scrollTop;
+          this.isCompacted.set(scrollValue > 50);
+        });
+      }
     }
   }
 
@@ -90,7 +81,14 @@ export class App implements AfterViewInit {
     this.mobileMenuOpen.update(val => !val);
   }
 
+  /**
+   * Función maestra de Scroll
+   * Maneja tanto IDs de elementos como posiciones numéricas
+   * @param position string (selector) o number (píxeles)
+   */
   scrollTo(position: number | string) {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const container = document.querySelector('#section-index');
     if (!container) return;
 
@@ -101,52 +99,43 @@ export class App implements AfterViewInit {
       if (targetElement) {
         const containerRect = container.getBoundingClientRect();
         const elementRect = targetElement.getBoundingClientRect();
+        // Calculamos la posición relativa al contenedor
         targetPosition = container.scrollTop + elementRect.top - containerRect.top;
+      } else {
+        console.warn(`Target element ${position} not found.`);
+        return;
       }
     } else {
       targetPosition = position;
     }
 
-    container.scrollTo({ top: targetPosition, behavior: 'smooth' });
-  }
-
-  scrollToProjects() {
-    const container = document.querySelector('#section-index');
-    const target = document.querySelector('#next-section');
-    
-    if (!container || !target) return;
-
-    // Cancelar animación anterior
+    // Cancelamos cualquier animación de scroll en curso para evitar conflictos
     if (this.scrollAnimation) {
       this.scrollAnimation.kill();
     }
 
-    const containerRect = container.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-    const currentScroll = container.scrollTop;
-    const targetPosition = currentScroll + targetRect.top - containerRect.top;
-
-    // Marcar que estamos haciendo scroll programático
-    this.isScrollingProgrammatically = true;
-
+    // Usamos GSAP para un control total y suave
     this.scrollAnimation = gsap.to(container, {
       scrollTo: {
         y: targetPosition,
-        autoKill: false
+        autoKill: true // Si el usuario scrollea manualmente, GSAP cede el control inmediatamente
       },
-      duration: 1,
+      duration: 1.2,
       ease: "power3.inOut",
       onComplete: () => {
         this.scrollAnimation = null;
-        this.isScrollingProgrammatically = false;
-      },
-      onInterrupt: () => {
-        this.scrollAnimation = null;
-        this.isScrollingProgrammatically = false;
       }
     });
-    
+
+    // Cerramos el menú móvil en caso de que esté abierto
     this.mobileMenuOpen.set(false);
+  }
+
+  /**
+   * Alias específico para el Hero o el Header
+   */
+  scrollToProjects() {
+    this.scrollTo('#next-section');
   }
 
   openMail() {

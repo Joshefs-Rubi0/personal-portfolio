@@ -118,3 +118,15 @@ html {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* Busca tu contenedor principal (probablemente el que tiene el id #section-index) */
+#section-index {
+  scroll-behavior: auto !important; /* GSAP se encarga del suavizado, el CSS debe ser 'auto' */
+  overflow-y: overlay; /* Esto ayuda a que el scrollbar no empuje el contenido en algunos navegadores */
+  height: 100vh;
+}
+
+/* Asegúrate que el Hero no tenga overflow que rompa el flujo */
+.hero-container {
+  overflow: hidden; 
+}
