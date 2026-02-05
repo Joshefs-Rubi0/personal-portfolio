@@ -17,45 +17,15 @@ export class App implements AfterViewInit {
   mobileMenuOpen = signal(false);
 
   ngAfterViewInit() {
-  const activeSection = document.querySelector("#section-index");
-  if (activeSection) {
-    activeSection.addEventListener('scroll', () => {
-      const scrollValue = activeSection.scrollTop;
-      this.isCompacted.set(scrollValue > 50);
-    });
+    const activeSection = document.querySelector("#section-index");
+    if (activeSection) {
+      activeSection.addEventListener('scroll', () => {
+        const scrollValue = activeSection.scrollTop;
+        this.isCompacted.set(scrollValue > 50); // Activamos la compactación a los 50px
+      });
+    }
   }
 
-  // Solución definitiva para limpiar hover en móviles
-  if ('ontouchstart' in window) {
-    document.addEventListener('touchstart', () => {
-      document.body.classList.add('using-touch');
-    }, { passive: true });
-
-    document.addEventListener('touchend', (e) => {
-      const target = e.target as HTMLElement;
-      
-      // Crear un elemento invisible temporal para robar el foco
-      const dummyElement = document.createElement('input');
-      dummyElement.style.position = 'fixed';
-      dummyElement.style.opacity = '0';
-      dummyElement.style.pointerEvents = 'none';
-      document.body.appendChild(dummyElement);
-      
-      // Dar foco al elemento dummy
-      dummyElement.focus();
-      
-      // Quitar foco del elemento tocado
-      if (target) {
-        target.blur();
-      }
-      
-      // Eliminar el elemento dummy después de un momento
-      setTimeout(() => {
-        dummyElement.remove();
-      }, 100);
-    }, { passive: true });
-  }
-}
   toggleMenu() {
     this.mobileMenuOpen.update(val => !val);
   }
