@@ -140,6 +140,6 @@ export class App implements AfterViewInit {
   }
 
   openDemo() {
-    window.location.href = 'https://calendar.notion.so/meet/santiagomasetlarraz/melon-mind';
+    window.location.href = '';
   }
 }

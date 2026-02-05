@@ -31,7 +31,7 @@
         [attr.directActionOn]="isCompacted() ? '' : null"
         (click)="openDemo()"
       >
-        Solicitar demo
+        Contacto
       </button>
 
       <button class="mobile-toggle only-on-mobile" (click)="toggleMenu()">
@@ -43,7 +43,7 @@
   <div class="mobile-drawer only-on-mobile" [class.active]="mobileMenuOpen()">
     <button (click)="scrollToProjects()">Proyectos</button>
     <button (click)="scrollTo(4150); toggleMenu()">Precios</button>
-    <button class="demo-mobile" (click)="openDemo()">Solicitar demo</button>
+    <button class="demo-mobile" (click)="openDemo()">Contacto</button>
   </div>
 </nav>
 
