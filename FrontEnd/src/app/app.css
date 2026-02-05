@@ -1,24 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
-/* ====== FIX CRÍTICO PARA SCROLL CONTAINER ====== */
-.scroll-container {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100vw !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-
-/* Fallback para navegadores que no soportan dvh */
-@supports not (height: 100dvh) {
-  .scroll-container {
-    height: 100vh !important;
-  }
-}
-
 #section-index {
   scroll-behavior: smooth;
   scrollbar-width: none;
