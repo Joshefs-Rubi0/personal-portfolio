@@ -26,14 +26,13 @@
 
     <div class="simple-container grow-0-1 gap-4">
       <button 
-  class="nav-button outline-light-1 hover-outline hide-on-mobile" 
-  id="solicitar-demo"
-  [attr.directActionOn]="isCompacted() ? '' : null"
-  (click)="openMail()"
->
-  Contacto
-</button>
-
+        class="nav-button outline-light-1 hover-outline hide-on-mobile" 
+        id="solicitar-demo"
+        [attr.directActionOn]="isCompacted() ? '' : null"
+        (click)="openMail()"
+      >
+        Contacto
+      </button>
 
       <button class="mobile-toggle only-on-mobile" (click)="toggleMenu()">
         <span class="material-symbols-rounded">{{ mobileMenuOpen() ? 'close' : 'menu' }}</span>
@@ -48,7 +47,8 @@
   </div>
 </nav>
 
-<div id="section-index" class="h-screen overflow-y-auto overflow-x-hidden relative bg-black">
+<!-- AGREGADA LA CLASE scroll-container -->
+<div id="section-index" class="scroll-container bg-black">
   <app-hero></app-hero>
   <div id="next-section">
     <app-projects-section></app-projects-section>
