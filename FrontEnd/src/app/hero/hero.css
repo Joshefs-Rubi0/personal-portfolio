@@ -1,32 +1,4 @@
-/* ====== CONTENEDOR HERO SIMPLIFICADO ====== */
-.hero-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-}
-
-.hero-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 100px 0 100px 0;
-  width: 100%;
-  gap: 1.5rem;
-}
-
-/* Ajustes para móvil */
-@media (max-width: 767px) {
-  .hero-content {
-    padding: 90px 0 90px 0;
-    gap: 1rem;
-  }
-}
-
-/* ====== RESTO DE ESTILOS ====== */
+/* ====== SOLO ESTILOS ESENCIALES ====== */
 html {
   scroll-padding-top: 90px;
   scroll-behavior: auto;
