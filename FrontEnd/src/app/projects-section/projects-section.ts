@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Meta, Title } from '@angular/platform-browser'; // Importante para SEO
+import { Meta, Title } from '@angular/platform-browser';
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -15,7 +15,6 @@ gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
   styleUrls: ['./projects-section.css']
 })
 export class ProjectsSection implements OnInit, AfterViewInit {
-  // Inyectamos los servicios de SEO
   private meta = inject(Meta);
   private titleService = inject(Title);
 
@@ -70,7 +69,6 @@ export class ProjectsSection implements OnInit, AfterViewInit {
     setTimeout(() => this.initMagneticScroll(), 500); 
   }
 
-  // --- Lógica de SEO Dinámico ---
   private updateDefaultSEO() {
     this.titleService.setTitle('Joshefs Rubio - Proyectos Destacados | Full Stack Developer');
     this.meta.updateTag({ name: 'description', content: 'Ingeniero Senior FullStack Joshefs Rubio, CEO: ADAE, OCUA y Raíces de la Vida. Soluciones Full Stack con Angular, AWS e Inteligencia Artificial.' });
@@ -86,7 +84,6 @@ export class ProjectsSection implements OnInit, AfterViewInit {
     }
   }
 
-  // --- Lógica de Componente ---
   filter() {
     this.filteredProjects = this.projects.filter(p => p.category === this.selectedCategory);
     setTimeout(() => ScrollTrigger.refresh(), 100);
@@ -156,7 +153,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
     this.isScrolling = true;
     this.currentScrollAnimation = gsap.to(window, { 
       scrollTo: target, 
-      duration: 1.5, // Un poco más rápido para mejor UX
+      duration: 1.5,
       ease: "power4.out", 
       onComplete: () => { 
         this.isScrolling = false;
@@ -167,19 +164,25 @@ export class ProjectsSection implements OnInit, AfterViewInit {
 
   toggleExpand(project: any) {
     const tl = gsap.timeline();
-    this.updateProjectSEO(project); // Actualizamos SEO al abrir/cerrar
+    this.updateProjectSEO(project);
 
     if (this.activeProject || project === null) {
+      // CERRAR MODAL
       tl.to('.window-modern', { scale: 0.95, opacity: 0, y: 30, duration: 0.4, ease: "power2.inOut" })
         .to('.overlay-blur', { opacity: 0, duration: 0.3 }, "-=0.2")
         .add(() => {
           gsap.set(['.overlay-blur', '.window-modern'], { display: 'none' });
+          const modalElement = document.querySelector('.window-modern') as HTMLElement;
+          if (modalElement) {
+            modalElement.style.pointerEvents = 'none';
+          }
           this.activeProject = null;
           document.body.style.overflow = '';
           document.documentElement.style.overflow = '';
           requestAnimationFrame(() => this.initMagneticScroll());
         });
     } else {
+      // ABRIR MODAL
       this.activeProject = project;
       if (this.scrollObserver) this.scrollObserver.kill();
       
@@ -188,6 +191,13 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       
       tl.set('.overlay-blur', { display: 'flex', opacity: 0 })
         .set('.window-modern', { display: 'flex' })
+        .add(() => {
+          // CRÍTICO: Habilitar pointer-events después de mostrar
+          const modalElement = document.querySelector('.window-modern') as HTMLElement;
+          if (modalElement) {
+            modalElement.style.pointerEvents = 'auto';
+          }
+        })
         .to('.overlay-blur', { opacity: 1, duration: 0.4 })
         .to('.window-modern', { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, "-=0.3");
     }

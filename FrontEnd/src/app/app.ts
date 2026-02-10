@@ -4,7 +4,6 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Hero } from './hero/hero';
 import { ProjectsSection } from './projects-section/projects-section';
 import { ContactFooter } from './contact-footer/contact-footer';
-import { AboutMe } from './about-me/about-me';
 import { gsap } from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
@@ -13,7 +12,7 @@ gsap.registerPlugin(ScrollToPlugin);
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, Hero, ProjectsSection, ContactFooter, AboutMe],
+  imports: [CommonModule, Hero, ProjectsSection, ContactFooter],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
