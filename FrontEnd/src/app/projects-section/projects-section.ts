@@ -70,7 +70,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   }
 
   private updateDefaultSEO() {
-    this.titleService.setTitle('Joshefs Rubio - Proyectos Destacados | Full Stack Developer');
+    this.titleService.setTitle('Joshefs Rubio - Full Stack Developer Angular & AWS | Portfolio');
     this.meta.updateTag({ name: 'description', content: 'Ingeniero Senior FullStack Joshefs Rubio, CEO: ADAE, OCUA y Raíces de la Vida. Soluciones Full Stack con Angular, AWS e Inteligencia Artificial.' });
   }
 
