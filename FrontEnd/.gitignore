@@ -19,7 +19,10 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-
+.idea/workspace.xml
+.idea/shelf/
+.idea/tasks.xml
+.idea/dictionaries/
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json
@@ -41,3 +44,4 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+

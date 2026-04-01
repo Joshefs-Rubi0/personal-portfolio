@@ -38,7 +38,6 @@
 
   /* SOLO hover en desktop */
   [nav-compacted]:hover {
-    transform: translateX(-50%) scale(1.02) !important;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 0 24px 0 rgba(0,0,0,0.4);
   }
 
