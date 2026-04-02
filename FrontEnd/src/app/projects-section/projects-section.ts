@@ -33,7 +33,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       title: 'ADAE - Gestión Educativa', 
       category: 'FullStack', 
       description: 'Plataforma de gestión educativa web diseñada para CBTis. Centraliza procesos académicos, pase de lista digital y almacenamiento seguro con WebSockets y cifrado avanzado.', 
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop', 
+      image: 'ADAE.webp', 
       demo_link: '#',
       tech: ['Angular', 'TypeScript', 'WebSocket', 'HTTPS'],
       keywords: 'ADAE, gestión educativa, CBTis, pase de lista digital, Joshefs Rubio'
@@ -42,7 +42,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       title: 'OCUA - IA para Horarios', 
       category: 'FullStack', 
       description: 'Aplicación web impulsada con Inteligencia Artificial para la creación y optimización de horarios universitarios. Reduce tiempos de organización de 2 horas a 10 minutos.', 
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop', 
+      image: 'OCUA.webp', 
       demo_link: '#',
       tech: ['Inteligencia Artificial', 'Angular', 'TypeScript'],
       keywords: 'OCUA, horarios universitarios IA, optimizador horarios, Joshefs Rubio'

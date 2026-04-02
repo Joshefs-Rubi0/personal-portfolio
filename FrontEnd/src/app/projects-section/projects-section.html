@@ -12,7 +12,7 @@
   
   <div class="content-holder overflow-y-auto flex-1 px-6 pb-20 md:px-32 custom-scrollbar">
      <div class="max-w-6xl mx-auto flex flex-col gap-10 mt-4" *ngIf="activeProject">
-        <img [src]="activeProject.image" class="w-full h-[40vh] md:h-[65vh] object-cover rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl">
+        <img [src]="activeProject.image" class="w-full h-[40vh] md:h-[65vh] object-cover rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl" loading="lazy" decoding="async" width="1920" height="1440">
         <div class="space-y-8 md:space-y-12 pb-20">
             <h1 class="text-4xl md:text-8xl font-bold tracking-tighter text-white">{{ activeProject.title }}</h1>
             <p class="text-xl md:text-3xl text-gray-300 font-light leading-snug">{{ activeProject.description }}</p>
@@ -55,7 +55,7 @@
 
         <div class="flex flex-col lg:flex-row items-center gap-6 md:gap-14 p-6 md:p-14 w-full h-full" (click)="toggleExpand(p)">
             <div class="lg:w-[55%] w-full h-56 md:h-[450px] relative overflow-hidden rounded-2xl md:rounded-3xl">
-              <img [src]="p.image" class="w-full h-full object-cover project-img-zoom">
+              <img [src]="p.image" class="w-full h-full object-cover project-img-zoom" loading="lazy" decoding="async" width="1920" height="1440">
             </div>
 
             <div class="lg:w-[45%] w-full space-y-4 md:space-y-6">
