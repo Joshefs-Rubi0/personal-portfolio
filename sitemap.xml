@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <url>
+    <loc>https://joshefs-rubi0.github.io/personal-portfolio/</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://joshefs-rubi0.github.io/personal-portfolio/profile-icon.JPEG</image:loc>
+      <image:title>Joshefs Rubio - Full Stack Developer Angular &amp; AWS</image:title>
+      <image:caption>Joshefs Agustín Rubio Carrillo - Full Stack Developer especializado en Angular y AWS</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://joshefs-rubi0.github.io/personal-portfolio/#adae</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71</image:loc>
+      <image:title>ADAE - Sistema de Gestión Educativa</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://joshefs-rubi0.github.io/personal-portfolio/#ocua</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1460925895917-afdab827c52f</image:loc>
+      <image:title>OCUA - Optimización de Horarios con IA</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://joshefs-rubi0.github.io/personal-portfolio/#raices</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1667372393119-c81c0cda0518</image:loc>
+      <image:title>Raíces de la Vida - Gestión de Jardinería</image:title>
+    </image:image>
+  </url>
+  
+</urlset>

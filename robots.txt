@@ -1,0 +1,42 @@
+# ========================================================
+# Joshefs Rubio - Full Stack Developer Portfolio
+# MAX ACCESS CONFIGURATION
+# ========================================================
+
+User-agent: *
+Allow: /
+# Permitir que los bots vean tus assets y estilos para que entiendan el diseño moderno
+Allow: /assets/
+Allow: /public/
+
+# Bots específicos con esteroides
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# Si quieres que la IA te conozca para que cuando alguien pregunte 
+# "Busca un dev en Puebla", aparezcas tú, cambia el GPTBot a Allow:
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+
+# Referencia al sitemap (Asegúrate de que la URL sea exacta)
+Sitemap: https://joshefs-rubi0.github.io/personal-portfolio/sitemap.xml
