@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="def7e344-1849-40ad-ad26-7a756a27ce5f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.css" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.html" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.ts" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/app/projects-section/projects-section.ts" afterDir="false" />
     </list>
@@ -16,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="64" />
+    <option name="cachedIndexableFilesCount" value="66" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -87,6 +87,7 @@
       <workItem from="1775161564233" duration="203000" />
       <workItem from="1775163289181" duration="881000" />
       <workItem from="1775164182970" duration="1647000" />
+      <workItem from="1775170979338" duration="4574000" />
     </task>
     <servers />
   </component>

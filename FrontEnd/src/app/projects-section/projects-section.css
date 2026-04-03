@@ -101,9 +101,10 @@
 .content-holder {
     position: relative;
     z-index: 1;
-    overflow-y: auto !important; /* Forzar scroll vertical */
+    overflow-y: auto !important;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto; /* Nativo — trackpad de Mac ya tiene momentum suave */
 }
 
 /* SCROLLBAR CUSTOM */
@@ -172,8 +173,21 @@
     }
 }
 
+/* Words float-up: solo opacity en CSS — GSAP maneja el transform via fromTo */
+.modal-title-word {
+    display: inline-block;
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* Timeline y reveals: GSAP los inicializa en runtime */
+.modal-scroll-reveal,
+.timeline-item {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
 @media (min-width: 768px) {
-    /* En desktop mantener el botón en su posición original */
     .btn-expand-wrapper {
         top: 2.5rem;
         right: 2.5rem;

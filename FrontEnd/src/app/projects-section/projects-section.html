@@ -13,10 +13,44 @@
   <div class="content-holder overflow-y-auto flex-1 px-6 pb-20 md:px-32 custom-scrollbar">
      <div class="max-w-6xl mx-auto flex flex-col gap-10 mt-4" *ngIf="activeProject">
         <img [src]="activeProject.image" class="w-full h-[40vh] md:h-[65vh] object-cover rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl" loading="lazy" decoding="async" width="1920" height="1440">
-        <div class="space-y-8 md:space-y-12 pb-20">
-            <h1 class="text-4xl md:text-8xl font-bold tracking-tighter text-white">{{ activeProject.title }}</h1>
-            <p class="text-xl md:text-3xl text-gray-300 font-light leading-snug">{{ activeProject.description }}</p>
-            <a [href]="activeProject.demo_link" target="_blank" class="inline-block bg-white text-black px-10 md:px-14 py-4 md:py-6 rounded-full font-bold text-lg md:text-2xl transition-all hover:scale-105 shadow-xl">Ver Proyecto Live</a>
+
+        <!-- Primera sección: título, contexto y flecha -->
+        <div class="space-y-8 md:space-y-10">
+            <h1 class="text-4xl md:text-8xl font-bold tracking-tighter text-white leading-tight">
+              @for (word of titleWords; track $index) {
+                <span class="modal-title-word inline-block mr-[0.25em]">{{ word }}</span>
+              }
+            </h1>
+            <p class="modal-scroll-reveal text-xl md:text-3xl text-gray-300 font-light leading-snug">{{ activeProject.description }}</p>
+            <a class="modal-scroll-reveal inline-block bg-white text-black px-10 md:px-14 py-4 md:py-6 rounded-full font-bold text-lg md:text-2xl transition-all hover:scale-105 shadow-xl" [href]="activeProject.demo_link" target="_blank">Ver Proyecto Live</a>
+        </div>
+
+        <!-- Separador — también es el anchor que dispara el reset del timeline -->
+        <div class="timeline-reset-anchor w-full border-t border-white/10"></div>
+
+        <!-- TIMELINE — lineal, sin heading -->
+        <div class="pb-24" *ngIf="activeProject?.timeline?.length">
+          <div class="relative pl-10">
+            <!-- Línea vertical -->
+            <div class="absolute left-3 top-0 bottom-0 w-px bg-white/10"></div>
+
+            @for (item of activeProject.timeline; track $index) {
+              <div class="timeline-item relative mb-12 md:mb-14">
+                <!-- Círculo exterior -->
+                <div class="absolute -left-[1.65rem] top-[0.3rem] w-[1.1rem] h-[1.1rem] rounded-full border-2 bg-[#0a0a0a]"
+                     [class.border-white]="item.active"
+                     [class.border-white/25]="!item.active"></div>
+                <!-- Punto interior activo -->
+                <div *ngIf="item.active" class="absolute -left-[1.32rem] top-[0.55rem] w-[0.55rem] h-[0.55rem] rounded-full bg-white"></div>
+
+                <span class="text-[0.7rem] font-mono text-white/35 tracking-[0.15em] uppercase">{{ item.date }}</span>
+                <h3 class="text-lg md:text-2xl font-bold mt-1 leading-tight"
+                    [class.text-white]="item.active"
+                    [class.text-white/60]="!item.active">{{ item.phase }}</h3>
+                <p class="text-gray-500 text-sm md:text-base mt-2 font-light leading-relaxed max-w-xl">{{ item.description }}</p>
+              </div>
+            }
+          </div>
         </div>
      </div>
   </div>

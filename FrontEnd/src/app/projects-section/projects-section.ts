@@ -27,6 +27,7 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   private lastScrollTime = 0;
   private scrollCooldown = 800;
   private currentScrollAnimation: gsap.core.Tween | null = null;
+  private scrollRevealCleanup: (() => void) | null = null;
 
   projects = [
     { 
@@ -36,7 +37,13 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       image: 'ADAE.webp', 
       demo_link: '#',
       tech: ['Angular', 'TypeScript', 'WebSocket', 'HTTPS'],
-      keywords: 'ADAE, gestión educativa, CBTis, pase de lista digital, Joshefs Rubio'
+      keywords: 'ADAE, gestión educativa, CBTis, pase de lista digital, Joshefs Rubio',
+      timeline: [
+        { date: '2023 · Q1', phase: 'Investigación y diseño', description: 'Levantamiento de requerimientos con directivos del CBTis. Arquitectura del sistema y diseño UX/UI.', active: false },
+        { date: '2023 · Q2', phase: 'Desarrollo del backend', description: 'API REST robusta con Node.js, comunicación en tiempo real vía WebSockets y cifrado AES para datos sensibles.', active: false },
+        { date: '2023 · Q3', phase: 'Módulo de asistencia', description: 'Pase de lista digital con QR, gestión de roles de docentes y alumnos, e historial académico centralizado.', active: false },
+        { date: '2023 · Q4', phase: 'Deploy y producción', description: 'Despliegue en servidor institucional con HTTPS. Capacitación a docentes y validación con usuarios reales.', active: true },
+      ]
     },
     { 
       title: 'OCUA - IA para Horarios', 
@@ -45,7 +52,13 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       image: 'OCUA.webp', 
       demo_link: '#',
       tech: ['Inteligencia Artificial', 'Angular', 'TypeScript'],
-      keywords: 'OCUA, horarios universitarios IA, optimizador horarios, Joshefs Rubio'
+      keywords: 'OCUA, horarios universitarios IA, optimizador horarios, Joshefs Rubio',
+      timeline: [
+        { date: '2024 · Q1', phase: 'Conceptualización con IA', description: 'Diseño del modelo de inteligencia artificial para restricciones académicas y optimización de horarios.', active: false },
+        { date: '2024 · Q2', phase: 'Motor de optimización', description: 'Algoritmo genético entrenado con datos históricos. Reducción del tiempo de generación de 2 horas a 10 minutos.', active: false },
+        { date: '2024 · Q3', phase: 'Interfaz Angular', description: 'Dashboard interactivo para gestión, visualización en grilla y exportación de horarios generados por la IA.', active: false },
+        { date: '2024 · Q4', phase: 'Validación con usuarios', description: 'Testing con coordinadores académicos reales. Refinamiento del modelo con retroalimentación institucional.', active: true },
+      ]
     },
     { 
       title: 'Raíces de la Vida', 
@@ -54,11 +67,21 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       image: 'https://images.unsplash.com/photo-1667372393119-c81c0cda0518?q=80&w=2070&auto=format&fit=crop', 
       demo_link: '#',
       tech: ['PHP', 'MySQL', 'XAMPP'],
-      keywords: 'Raíces de la vida, sistema jardinería, PHP MySQL, Joshefs Rubio'
+      keywords: 'Raíces de la vida, sistema jardinería, PHP MySQL, Joshefs Rubio',
+      timeline: [
+        { date: '2022 · Q1', phase: 'Análisis del problema', description: 'Diagnóstico de áreas verdes escolares. Diseño del sistema de recordatorios y roles de cuidadores.', active: false },
+        { date: '2022 · Q2', phase: 'Backend PHP + MySQL', description: 'Base de datos de plantas, lógica de mantenimiento automatizado y sistema de recordatorios programados.', active: false },
+        { date: '2022 · Q3', phase: 'Panel de control', description: 'Interfaz web para coordinadores escolares, notificaciones de riego y fertilización por área.', active: false },
+        { date: '2022 · Q4', phase: 'Implementación escolar', description: 'Despliegue con XAMPP, capacitación a personal y entrega oficial a la institución educativa.', active: true },
+      ]
     }
   ];
 
   filteredProjects: any[] = [];
+
+  get titleWords(): string[] {
+    return this.activeProject?.title?.split(' ') ?? [];
+  }
 
   ngOnInit() { 
     this.filter(); 
@@ -66,7 +89,12 @@ export class ProjectsSection implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() { 
-    setTimeout(() => this.initMagneticScroll(), 500); 
+    setTimeout(() => this.initMagneticScroll(), 500);
+    // Precargar todas las imágenes para que no carguen al abrir el modal
+    this.projects.forEach(p => {
+      const img = new Image();
+      img.src = p.image;
+    });
   }
 
   private updateDefaultSEO() {
@@ -162,20 +190,85 @@ export class ProjectsSection implements OnInit, AfterViewInit {
     });
   }
 
+  // Anima palabras + descripción/botón — corre en cuanto Angular renderiza el *ngIf
+  private runModalContentAnimation() {
+    const words   = document.querySelectorAll('.modal-title-word');
+    const reveals = document.querySelectorAll('.modal-scroll-reveal');
+    if (!words.length) return;
+
+    gsap.set(reveals, { x: 50, opacity: 0 });
+
+    gsap.timeline()
+      .fromTo(words,
+        { y: 80, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.12, ease: 'power4.out' }
+      )
+      .to(reveals,
+        { x: 0, opacity: 1, duration: 0.75, stagger: 0.1, ease: 'power3.out' },
+        '-=0.75'
+      );
+  }
+
+  // Timeline scroll-triggered:
+  // · Cada item anima al entrar al viewport
+  // · Reset cuando scrollTop < 150 (cerca del top, pero no en la cara del usuario)
+  private initModalScrollReveal() {
+    const ch = document.querySelector('.content-holder') as HTMLElement;
+    if (!ch) return;
+
+    gsap.set(ch.querySelectorAll('.timeline-item'), { x: 70, opacity: 0 });
+
+    let wasNearTop = true;
+
+    const onScroll = () => {
+      const scrollTop = ch.scrollTop;
+      const holderRect = ch.getBoundingClientRect();
+
+      // Reset solo cuando el usuario subió considerablemente (cerca del top)
+      if (scrollTop < 150) {
+        if (!wasNearTop) {
+          wasNearTop = true;
+          ch.querySelectorAll('.timeline-item').forEach(el => {
+            el.classList.remove('revealed');
+            gsap.set(el, { x: 70, opacity: 0 });
+          });
+        }
+        return;
+      }
+
+      wasNearTop = false;
+
+      ch.querySelectorAll('.timeline-item:not(.revealed)').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top - holderRect.top < holderRect.height * 0.85) {
+          el.classList.add('revealed');
+          gsap.fromTo(el,
+            { x: 70, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.9, ease: 'expo.out' }
+          );
+        }
+      });
+    };
+
+    ch.addEventListener('scroll', onScroll);
+    this.scrollRevealCleanup = () => ch.removeEventListener('scroll', onScroll);
+  }
+
   toggleExpand(project: any) {
     const tl = gsap.timeline();
     this.updateProjectSEO(project);
 
     if (this.activeProject || project === null) {
       // CERRAR MODAL
-      tl.to('.window-modern', { scale: 0.95, opacity: 0, y: 30, duration: 0.4, ease: "power2.inOut" })
-        .to('.overlay-blur', { opacity: 0, duration: 0.3 }, "-=0.2")
+      this.scrollRevealCleanup?.();
+      this.scrollRevealCleanup = null;
+
+      tl.to('.window-modern', { scale: 0.95, opacity: 0, y: 30, duration: 0.4, ease: 'power2.inOut' })
+        .to('.overlay-blur', { opacity: 0, duration: 0.3 }, '-=0.2')
         .add(() => {
           gsap.set(['.overlay-blur', '.window-modern'], { display: 'none' });
-          const modalElement = document.querySelector('.window-modern') as HTMLElement;
-          if (modalElement) {
-            modalElement.style.pointerEvents = 'none';
-          }
+          const modalEl = document.querySelector('.window-modern') as HTMLElement;
+          if (modalEl) modalEl.style.pointerEvents = 'none';
           this.activeProject = null;
           document.body.style.overflow = '';
           document.documentElement.style.overflow = '';
@@ -185,21 +278,26 @@ export class ProjectsSection implements OnInit, AfterViewInit {
       // ABRIR MODAL
       this.activeProject = project;
       if (this.scrollObserver) this.scrollObserver.kill();
-      
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
-      
+
       tl.set('.overlay-blur', { display: 'flex', opacity: 0 })
-        .set('.window-modern', { display: 'flex' })
+        .set('.window-modern', { display: 'flex', scale: 0.97, opacity: 0, y: 30 })
         .add(() => {
-          // CRÍTICO: Habilitar pointer-events después de mostrar
-          const modalElement = document.querySelector('.window-modern') as HTMLElement;
-          if (modalElement) {
-            modalElement.style.pointerEvents = 'auto';
-          }
+          const modalEl = document.querySelector('.window-modern') as HTMLElement;
+          if (modalEl) modalEl.style.pointerEvents = 'auto';
+          const ch = document.querySelector('.content-holder') as HTMLElement;
+          if (ch) ch.scrollTop = 0;
+
+          // Doble RAF: Angular renderiza en el frame 1, DOM estable en frame 2
+          // Las animaciones arrancan MIENTRAS el modal abre → sin delay percibido
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            this.runModalContentAnimation();
+            this.initModalScrollReveal();
+          }));
         })
-        .to('.overlay-blur', { opacity: 1, duration: 0.4 })
-        .to('.window-modern', { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, "-=0.3");
+        .to('.overlay-blur', { opacity: 1, duration: 0.5 })
+        .to('.window-modern', { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' }, '-=0.3');
     }
   }
 }
