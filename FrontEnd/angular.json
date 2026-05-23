@@ -22,7 +22,10 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "baseHref": "/personal-portfolio/",
+            "baseHref": "/",
+            "allowedCommonJsDependencies": [
+              "aos"
+            ],
             "assets": [
               {
                 "glob": "**/*",
