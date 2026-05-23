@@ -1,4 +1,4 @@
-import { Component, signal, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, signal, AfterViewInit, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Hero } from './hero/hero';
@@ -16,7 +16,7 @@ gsap.registerPlugin(ScrollToPlugin);
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements AfterViewInit {
+export class App implements AfterViewInit, OnInit {
   isCompacted = signal(false);
   mobileMenuOpen = signal(false);
   private scrollAnimation: gsap.core.Tween | null = null;
@@ -25,41 +25,31 @@ export class App implements AfterViewInit {
     private titleService: Title,
     private metaService: Meta,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.setSEO();
-  }
+  ) {}
 
-  private setSEO() {
-    this.titleService.setTitle('Joshefs Rubio - Full Stack Developer Angular & AWS | ADAE, OCUA, Raíces de la Vida');
-    
-    this.metaService.updateTag({ 
-      name: 'description', 
-      content: 'Joshefs Agustín Rubio Carrillo - Full Stack Developer en Puebla, México. Creador de ADAE (gestión educativa), OCUA (IA horarios universitarios) y Raíces de la Vida. Especialista en Angular, TypeScript, AWS, PHP y MySQL.' 
+  ngOnInit(): void {
+    // Título SEO principal enfocado en Rol + Stack Internacional
+    this.titleService.setTitle('Joshefs Rubio | Full Stack Developer & Software Engineer');
+
+    // Metatags descriptivos optimizados con terminología técnica e ingeniería pura
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'Portafolio de ingeniería de software de Joshefs Rubio. Desarrollo de aplicaciones de alto rendimiento, sistemas escalables con Angular/TypeScript y diseño de arquitecturas cloud en AWS.'
     });
-    
-    this.metaService.updateTag({ 
-      name: 'keywords', 
-      content: 'Joshefs Rubio, Joshefs Agustín Rubio Carrillo, Full Stack Developer Puebla, Angular Developer México, AWS Developer, TypeScript, PHP MySQL, ADAE sistema educativo, OCUA horarios IA, desarrollador web Puebla, programador Angular, cloud computing AWS, desarrollador freelance México' 
+
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: 'Joshefs Rubio | Full Stack Developer & Software Engineer'
     });
-    
-    this.metaService.updateTag({ 
-      property: 'og:title', 
-      content: 'Joshefs Rubio - Full Stack Developer | ADAE, OCUA, Raíces de la Vida' 
+
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: 'Desarrollo de software Full Stack enfocado en rendimiento, mantenibilidad y escalabilidad. Especialización en ecosistemas TypeScript, frameworks SPA y servicios en la nube.'
     });
-    
-    this.metaService.updateTag({ 
-      property: 'og:description', 
-      content: 'Full Stack Developer especializado en Angular, TypeScript, AWS Cloud. Creador de ADAE, OCUA y Raíces de la Vida. Portfolio profesional con proyectos reales en Puebla, México.' 
-    });
-    
-    this.metaService.updateTag({ 
-      name: 'twitter:title', 
-      content: 'Joshefs Rubio - Full Stack Developer Angular & AWS' 
-    });
-    
-    this.metaService.updateTag({ 
-      name: 'twitter:description', 
-      content: 'CEO de ADAE, OCUA y Raíces de la Vida. Especialista en Angular, TypeScript y AWS Cloud.' 
+
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: 'https://joshefrubio.com/'
     });
   }
 
