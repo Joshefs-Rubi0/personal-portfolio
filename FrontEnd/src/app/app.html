@@ -1,10 +1,10 @@
-<nav 
-  class="nav-style-5 variant-1 variant-2 justify-center flex items-center" 
-  style="width:calc(100% - 24px); z-index: 9999; position: fixed; left: 50%; transform: translateX(-50%);"
+<nav
+  class="nav-style-5 variant-1 variant-2 justify-center flex items-center"
+  style="z-index: 9999; position: fixed; left: 50%; transform: translateX(-50%);"
   [attr.nav-compacted]="isCompacted() ? '' : null"
 >
   <div class="simple-container grow-1 justify-between-wide-screen max-width-1200 px-4 w-full">
-    
+
     <div class="simple-container grow-0-1">
       <button class="nav-button stepbro" (click)="scrollTo(0)">
         <span class="icon-holder">
@@ -25,8 +25,8 @@
     </div>
 
     <div class="simple-container grow-0-1 gap-4">
-      <button 
-  class="nav-button outline-light-1 hover-outline hide-on-mobile" 
+      <button
+  class="nav-button outline-light-1 hover-outline hide-on-mobile"
   id="solicitar-demo"
   [attr.directActionOn]="isCompacted() ? '' : null"
   (click)="openMail()"

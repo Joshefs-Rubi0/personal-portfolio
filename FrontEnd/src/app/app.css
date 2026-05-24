@@ -15,18 +15,19 @@
     margin: 0 !important;
     margin-top: 24px !important;
     max-width: 1200px;
+    width: calc(100% - 48px);
     height: 64px !important;
     display: flex;
     align-items: center;
     border-radius: 64px;
     transform-origin: top;
-    transition: max-width 0.5s cubic-bezier(.36,.6,0,1), 
-                background 0.5s cubic-bezier(.36,.6,0,1), 
-                transform 0.3s cubic-bezier(0,0,0.5,1), 
+    transition: max-width 0.5s cubic-bezier(.36,.6,0,1),
+                background 0.5s cubic-bezier(.36,.6,0,1),
+                transform 0.3s cubic-bezier(0,0,0.5,1),
                 box-shadow 0.3s cubic-bezier(0,0,0.5,1);
-    
+
     backdrop-filter: blur(30px) saturate(150%);
-    background: rgba(15, 15, 15, 0.4); 
+    background: rgba(15, 15, 15, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -41,8 +42,8 @@
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 0 24px 0 rgba(0,0,0,0.4);
   }
 
-  .nav-button:hover { 
-    background: rgba(255, 255, 255, 0.1); 
+  .nav-button:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .only-on-mobile { display: none !important; }
@@ -54,18 +55,19 @@
 
   nav.nav-style-5 {
     height: 60px !important;
-    background: rgba(10, 10, 10, 0.7) !important;
-    backdrop-filter: blur(30px) saturate(180%);
+    background: rgba(10, 10, 10, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%);
     margin-top: 10px !important;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    width: calc(100% - 32px) !important;
   }
 
   /* Deshabilitar hover en móvil */
-  .nav-button:hover { 
-    background: transparent !important; 
+  .nav-button:hover {
+    background: transparent !important;
   }
-  
+
   [nav-compacted]:hover {
     transform: translateX(-50%) scale(1) !important;
     box-shadow: none !important;
